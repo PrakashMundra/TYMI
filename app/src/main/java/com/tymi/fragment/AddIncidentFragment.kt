@@ -1,0 +1,255 @@
+package com.tymi.fragment
+
+import android.app.Activity
+import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.TextView
+import com.tymi.Constants
+import com.tymi.R
+import com.tymi.entity.Incident
+import com.tymi.entity.LookUp
+import com.tymi.enums.IncidentStatus
+import com.tymi.interfaces.ISpinnerWidget
+import com.tymi.utils.DateUtils
+import com.tymi.utils.GenericTextWatcher
+import kotlinx.android.synthetic.main.fragment_add_incident.*
+
+
+class AddIncidentFragment : BaseFragment(), View.OnClickListener,
+        GenericTextWatcher.TextWatcherHandler, TextView.OnEditorActionListener, ISpinnerWidget {
+    private var mPosition = Constants.DEFAULT_ID
+
+    companion object {
+        fun newInstance(position: Int, isEdit: Boolean): AddIncidentFragment {
+            val fragment = AddIncidentFragment()
+            val bundle = Bundle()
+            bundle.putInt(Constants.Extras.POSITION, position)
+            bundle.putBoolean(Constants.Extras.EDIT, isEdit)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
+    override fun getContainerLayoutId(): Int {
+        return R.layout.fragment_add_incident
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+        if (arguments != null) {
+            mPosition = arguments.get(Constants.Extras.POSITION) as Int
+            val isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
+            if (mPosition != Constants.DEFAULT_ID)
+                setIncidentData(isEdit)
+        }
+    }
+
+    private fun initViews() {
+        mScrollView = scrollView
+        status?.setWidgetId(R.id.status)
+        status?.setCallBack(this)
+        start_date?.isMaxToday = true
+        cause?.addTextChangedListener(GenericTextWatcher(cause as EditText, this))
+        medication?.addTextChangedListener(GenericTextWatcher(medication as EditText, this))
+        notes?.addTextChangedListener(GenericTextWatcher(notes as EditText, this))
+        expenses?.addTextChangedListener(GenericTextWatcher(expenses as EditText, this))
+        btn_submit.setOnClickListener(this)
+        btn_cancel.setOnClickListener(this)
+        setViewsData()
+    }
+
+    private fun setViewsData() {
+        setStatuses()
+        setProfiles()
+        setIncidents()
+    }
+
+    private fun setStatuses() {
+        val statuses = IncidentStatus.getStatusLookUp(context)
+        status?.setAdapter(statuses)
+    }
+
+    private fun setProfiles() {
+        select_profile?.setAdapterWithDefault(getDataModel().profileLookUps)
+    }
+
+    private fun setIncidents() {
+        val incidents = getDataModel().incidentLookUps
+        if (incidents.size == 0) {
+            //ToDO load incidents from Server
+            incidents.add(LookUp(1, "One"))
+        }
+        select_incident?.setAdapterWithDefault(incidents)
+    }
+
+    private fun setIncidentData(isEdit: Boolean) {
+        val incident = getDataModel().incidents[mPosition]
+        status?.setSelectedValue(incident.statusId)
+        select_profile?.setSelectedValue(incident.profile)
+        select_incident?.setSelectedValue(incident.incident)
+        cause?.text = SpannableStringBuilder(incident.cause)
+        start_date?.setValue(incident.startDate)
+        medication?.text = SpannableStringBuilder(incident.medication)
+        notes?.text = SpannableStringBuilder(incident.notes)
+        end_date?.setValue(incident.endDate)
+        expenses?.text = SpannableStringBuilder(incident.expenses)
+        hospital?.text = SpannableStringBuilder(incident.hospital)
+        if (!isEdit) {
+            disableAllFields(add_incident)
+            add_incident_buttons?.visibility = View.GONE
+        }
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.btn_submit -> submitIncident()
+            R.id.btn_cancel -> activity.finish()
+        }
+    }
+
+    override fun onSpinnerSelection(viewId: Int, position: Int, lookUp: LookUp) {
+        when (viewId) {
+            R.id.status -> {
+                val isClosed = (lookUp.id == Constants.STATUS_CLOSE)
+                end_date?.isEnabled = isClosed
+                end_date?.isSelected = false
+            }
+        }
+    }
+
+    override fun onEditorAction(p0: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            submitIncident()
+            return true
+        }
+        return false
+    }
+
+    override fun beforeTextChanged() {
+
+    }
+
+    override fun onTextChanged() {
+
+    }
+
+    override fun afterTextChanged(view: View?) {
+        when (view?.id) {
+            R.id.cause -> cause?.isSelected = false
+            R.id.medication -> medication?.isSelected = false
+            R.id.notes -> notes?.isSelected = false
+            R.id.expenses -> expenses?.isSelected = false
+        }
+    }
+
+    private fun submitIncident() {
+        if (validations()) {
+            if (mPosition != Constants.DEFAULT_ID) {
+                val incident = getDataModel().incidents[mPosition]
+                getDataModel().incidents[mPosition] = getIncident(incident.id)
+            } else {
+                val id = getDataModel().incidents.size + 1
+                getDataModel().incidents.add(getIncident(id))
+            }
+            activity.setResult(Activity.RESULT_OK)
+            activity.finish()
+        } else
+            scrollToErrorView()
+    }
+
+    private fun getIncident(id: Int): Incident {
+        val selectedStatus = status?.getSelectedItem() as LookUp
+        return Incident(id,
+                selectedStatus.id,
+                select_profile?.getSelectedItem() as LookUp,
+                select_incident?.getSelectedItem() as LookUp,
+                cause?.text.toString(),
+                start_date.getValue(),
+                medication?.text.toString(),
+                notes?.text.toString(),
+                end_date.getValue(),
+                expenses?.text.toString(),
+                hospital?.text.toString())
+    }
+
+    private fun validations(): Boolean {
+        mErrorView = null
+        var isValid = true
+        val selectedStatus = status?.getSelectedItem() as LookUp
+        if (selectedStatus.id == Constants.DEFAULT_ID) {
+            status?.isSelected = true
+            setErrorView(status as View)
+            isValid = false
+        }
+
+        val profile = select_profile?.getSelectedItem() as LookUp
+        if (profile.id == Constants.DEFAULT_ID) {
+            select_profile?.isSelected = true
+            setErrorView(select_profile as View)
+            isValid = false
+        }
+
+        val incident = select_incident?.getSelectedItem() as LookUp
+        if (incident.id == Constants.DEFAULT_ID) {
+            select_incident?.isSelected = true
+            setErrorView(select_incident as View)
+            isValid = false
+        }
+
+        val causeStr = cause?.text.toString()
+        if (causeStr.trim().isNullOrEmpty()) {
+            cause?.isSelected = true
+            setErrorView(cause?.parent as View)
+            isValid = false
+        }
+
+        val startDate = start_date?.getValue() as String
+        if (startDate.trim().isNullOrEmpty()) {
+            start_date?.isSelected = true
+            setErrorView(start_date as View)
+            isValid = false
+        }
+
+        val medicationStr = medication?.text.toString()
+        if (medicationStr.trim().isNullOrEmpty()) {
+            medication?.isSelected = true
+            setErrorView(medication?.parent as View)
+            isValid = false
+        }
+
+        val notesStr = notes?.text.toString()
+        if (notesStr.trim().isNullOrEmpty()) {
+            notes?.isSelected = true
+            setErrorView(notes?.parent as View)
+            isValid = false
+        }
+
+        if (selectedStatus.id == Constants.STATUS_CLOSE) {
+            val endDate = end_date?.getValue() as String
+            if (endDate.trim().isNullOrEmpty()) {
+                end_date?.isSelected = true
+                setErrorView(end_date as View)
+                isValid = false
+            }
+
+            if (DateUtils.compareDates(startDate, endDate)) {
+                end_date?.isSelected = true
+                setErrorView(end_date as View)
+                isValid = false
+            }
+        }
+
+        val expensesStr = expenses?.text.toString()
+        if (expensesStr.trim().isNullOrEmpty()) {
+            expenses?.isSelected = true
+            setErrorView(expenses?.parent as View)
+            isValid = false
+        }
+        return isValid
+    }
+}

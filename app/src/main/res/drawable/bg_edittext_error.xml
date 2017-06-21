@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="@dimen/et_stroke"
+        android:left="@dimen/et_stroke"
+        android:top="@dimen/et_stroke">
+        <shape>
+            <solid android:color="#FF0000" />
+        </shape>
+    </item>
+
+    <item android:left="@dimen/et_error_stroke">
+        <shape>
+            <solid android:color="@color/et_fill" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <stroke
+                android:width="@dimen/et_stroke"
+                android:color="@color/et_stroke" />
+        </shape>
+    </item>
+</layer-list>

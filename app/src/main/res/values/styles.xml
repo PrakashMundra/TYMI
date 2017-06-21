@@ -1,0 +1,111 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
+        <item name="android:windowContentTransitions" tools:targetApi="21">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="buttonStyle">@style/Button</item>
+        <item name="android:buttonStyle" tools:targetApi="21">@style/Button</item>
+        <item name="editTextStyle">@style/EditText</item>
+        <item name="android:editTextStyle" tools:targetApi="21">@style/EditText</item>
+        <item name="spinnerStyle">@style/Spinner</item>
+        <item name="android:spinnerStyle" tools:targetApi="21">@style/Spinner</item>
+        <item name="android:spinnerItemStyle">@style/Spinner.DropDownItem</item>
+        <item name="android:dropDownItemStyle">@style/Spinner.DropDownItem</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Spinner.DropDownItem</item>
+        <item name="spinnerDropDownItemStyle">@style/Spinner.DropDownItem</item>
+        <item name="android:dropDownListViewStyle">@style/Spinner.DropDownListView</item>
+        <item name="dropDownListViewStyle">@style/Spinner.DropDownListView</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:colorControlNormal" tools:targetApi="21">@android:color/white</item>
+        <item name="colorControlActivated">@color/colorActivated</item>
+        <item name="android:colorControlActivated" tools:targetApi="21">@color/colorActivated</item>
+        <item name="colorControlHighlight">@color/colorHighlight</item>
+        <item name="android:colorControlHighlight" tools:targetApi="21">@color/colorHighlight</item>
+    </style>
+
+    <style name="AppTheme.FullScreen" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Match">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MatchWidth" parent="Wrap">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="MatchHeight" parent="Wrap">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:minHeight">@dimen/btn_min_ht</item>
+    </style>
+
+    <style name="EditText" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/selector_edittext</item>
+        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:minHeight">@dimen/et_min_ht</item>
+    </style>
+
+    <style name="Spinner" parent="@style/Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/selector_spinner</item>
+        <item name="android:popupBackground">@drawable/selector_spinner</item>
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="Spinner.DropDownItem" parent="@style/Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <style name="Spinner.DropDownListView" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/colorPrimary</item>
+        <item name="android:dividerHeight">@dimen/et_stroke</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="ValueTextView" parent="Wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">@dimen/dashboard_title</item>
+    </style>
+
+    <style name="Header.Title" parent="MatchWidth">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/dashboard_title</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="IncidentItem" parent="Wrap">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/dashboard_title</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

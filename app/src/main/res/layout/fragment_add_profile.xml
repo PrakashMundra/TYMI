@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Match"
+    android:divider="@drawable/divider_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/margin"
+    android:showDividers="middle">
+
+    <LinearLayout
+        style="@style/MatchWidth"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Wrap"
+            android:text="@string/full_name" />
+
+        <EditText
+            android:id="@+id/et_full_name"
+            style="@style/MatchWidth"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+
+    <com.tymi.widget.SpinnerWidget
+        android:id="@+id/role"
+        style="@style/MatchWidth"
+        app:SpinnerWidget_key="@string/role" />
+
+    <com.tymi.widget.DateViewWidget
+        android:id="@+id/et_dob"
+        style="@style/MatchWidth"
+        app:DateViewWidget_key="@string/dob"
+        app:DateViewWidget_max_today="true" />
+
+    <LinearLayout
+        style="@style/MatchWidth"
+        android:divider="@drawable/divider_horizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/MatchWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/submit" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/MatchWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout>

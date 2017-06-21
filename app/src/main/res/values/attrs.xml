@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextKV">
+        <attr name="et_title" format="string" />
+        <attr name="et_icon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DateViewWidget">
+        <attr name="DateViewWidget_key" format="string" />
+        <attr name="DateViewWidget_max_today" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SpinnerWidget">
+        <attr name="SpinnerWidget_key" format="string" />
+    </declare-styleable>
+</resources>

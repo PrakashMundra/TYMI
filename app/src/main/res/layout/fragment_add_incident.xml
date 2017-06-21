@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_incident"
+    style="@style/Match"
+    android:orientation="vertical"
+    android:padding="@dimen/margin">
+
+    <ScrollView
+        android:id="@id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_weight="1"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            style="@style/Match"
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <com.tymi.widget.SpinnerWidget
+                android:id="@+id/status"
+                style="@style/MatchWidth"
+                app:SpinnerWidget_key="@string/status" />
+
+            <com.tymi.widget.SpinnerWidget
+                android:id="@+id/select_profile"
+                style="@style/MatchWidth"
+                app:SpinnerWidget_key="@string/select_profile" />
+
+            <com.tymi.widget.SpinnerWidget
+                android:id="@+id/select_incident"
+                style="@style/MatchWidth"
+                app:SpinnerWidget_key="@string/select_incident" />
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/cause" />
+
+                <EditText
+                    android:id="@+id/cause"
+                    style="@style/MatchWidth"
+                    android:layout_height="@dimen/et_max_ht"
+                    android:gravity="top"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <com.tymi.widget.DateViewWidget
+                android:id="@+id/start_date"
+                style="@style/MatchWidth"
+                app:DateViewWidget_key="@string/start_date"
+                app:DateViewWidget_max_today="true" />
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/medication" />
+
+                <EditText
+                    android:id="@+id/medication"
+                    style="@style/MatchWidth"
+                    android:layout_height="@dimen/et_max_ht"
+                    android:gravity="top"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/notes" />
+
+                <EditText
+                    android:id="@+id/notes"
+                    style="@style/MatchWidth"
+                    android:layout_height="@dimen/et_max_ht"
+                    android:gravity="top"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <com.tymi.widget.DateViewWidget
+                android:id="@+id/end_date"
+                style="@style/MatchWidth"
+                app:DateViewWidget_key="@string/end_date"
+                app:DateViewWidget_max_today="false" />
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/expenses" />
+
+                <EditText
+                    android:id="@+id/expenses"
+                    style="@style/MatchWidth"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/hospital" />
+
+                <EditText
+                    android:id="@+id/hospital"
+                    style="@style/MatchWidth"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/add_incident_buttons"
+        style="@style/MatchWidth"
+        android:divider="@drawable/divider_horizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/MatchWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/submit" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/MatchWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/cancel" />
+    </LinearLayout>
+</LinearLayout>

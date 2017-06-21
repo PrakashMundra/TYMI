@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWidth"
+    android:padding="@dimen/margin">
+
+    <LinearLayout
+        style="@style/MatchWidth"
+        android:divider="@drawable/divider_vertical"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/full_name" />
+
+                <TextView
+                    android:id="@+id/child_full_name"
+                    style="@style/ValueTextView"
+                    android:text="@string/full_name" />
+            </LinearLayout>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/child_edit"
+                style="@style/Wrap"
+                app:srcCompat="@drawable/ic_edit" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/role" />
+
+                <TextView
+                    android:id="@+id/child_role"
+                    style="@style/ValueTextView"
+                    android:text="@string/role" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/dob" />
+
+                <TextView
+                    android:id="@+id/child_dob"
+                    style="@style/ValueTextView"
+                    android:text="@string/dob" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

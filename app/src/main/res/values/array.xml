@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="incidents_tabs">
+        <item>@string/open_incidents</item>
+        <item>@string/closed_incidents</item>
+    </string-array>
+</resources>

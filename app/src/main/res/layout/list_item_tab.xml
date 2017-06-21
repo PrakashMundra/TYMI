@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWidth"
+    android:minHeight="@dimen/et_min_ht">
+
+    <TextView
+        android:id="@+id/tab_title"
+        style="@style/Wrap"
+        android:layout_centerInParent="true"
+        android:textColor="@color/selector_tab_text"
+        android:textSize="@dimen/dashboard_title" />
+</RelativeLayout>

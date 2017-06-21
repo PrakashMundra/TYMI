@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Match"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/MatchWidth"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="@android:color/white" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        style="@style/Match">
+
+        <FrameLayout
+            android:id="@+id/activity_container"
+            style="@style/Match" />
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigationView"
+            style="@style/MatchHeight"
+            android:layout_gravity="start"
+            app:menu="@menu/menu" />
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>

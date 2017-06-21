@@ -1,0 +1,20 @@
+package com.tymi
+
+object Constants {
+    val DATE_FORMAT = "dd/MM/yyyy"
+    val DEFAULT_ID = -1
+    val HOME_SPANS = 2
+    val STATUS_OPEN = 1
+    val STATUS_CLOSE = 2
+
+    object Extras {
+        val POSITION = "POSITION"
+        val EDIT = "EDIT"
+    }
+
+    object RequestCodes {
+        val PROFILE = 0x100
+        val CHILD_PROFILE = 0x101
+        val INCIDENT = 0x102
+    }
+}

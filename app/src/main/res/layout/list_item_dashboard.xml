@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tymi.widget.ProportionalLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Match"
+    android:background="@color/colorPrimary"
+    android:divider="@drawable/divider_vertical"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:showDividers="beginning|middle|end">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/dashboard_icon"
+        style="@style/Wrap"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/dashboard_title"
+        style="@style/Wrap"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dashboard_title" />
+</com.tymi.widget.ProportionalLinearLayout>
