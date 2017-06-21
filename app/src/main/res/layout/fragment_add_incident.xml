@@ -138,17 +138,17 @@
         android:showDividers="middle">
 
         <Button
-            android:id="@+id/btn_submit"
-            style="@style/MatchWidth"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="@string/submit" />
-
-        <Button
             android:id="@+id/btn_cancel"
             style="@style/MatchWidth"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            style="@style/MatchWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/submit" />
     </LinearLayout>
 </LinearLayout>

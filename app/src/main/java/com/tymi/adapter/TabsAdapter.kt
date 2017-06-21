@@ -5,14 +5,12 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 
-class TabsAdapter : FragmentStatePagerAdapter {
+class TabsAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTitleList = ArrayList<String>()
 
-    constructor(fm: FragmentManager?) : super(fm)
-
     override fun getItem(position: Int): Fragment {
-        return mFragmentList.get(position)
+        return mFragmentList[position]
     }
 
     override fun getCount(): Int {
@@ -25,7 +23,7 @@ class TabsAdapter : FragmentStatePagerAdapter {
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return mFragmentTitleList.get(position)
+        return mFragmentTitleList[position]
     }
 
     override fun getItemPosition(`object`: Any?): Int {

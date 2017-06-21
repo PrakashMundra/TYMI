@@ -45,7 +45,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
 
     fun disableAllFields(layout: ViewGroup) {
         val count = layout.childCount
-        for (i: Int in 0..count) {
+        (0 until count).forEach { i ->
             val view = layout.getChildAt(i)
             if (view != null) {
                 if (view is SpinnerWidget)

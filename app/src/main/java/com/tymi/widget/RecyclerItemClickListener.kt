@@ -34,7 +34,7 @@ class RecyclerItemClickListener(context: Context, listener: ItemClickListener) :
     }
 
     override fun onInterceptTouchEvent(view: RecyclerView?, e: MotionEvent?): Boolean {
-        mView = view?.findChildViewUnder(e?.getX() as Float, e.getY())
+        mView = view?.findChildViewUnder(e?.x as Float, e.y)
         mPosition = if (mView != null) view?.getChildAdapterPosition(mView) as Int else -1
         return mView != null && mGestureDetector?.onTouchEvent(e) as Boolean
     }

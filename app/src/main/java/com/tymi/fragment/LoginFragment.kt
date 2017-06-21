@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import com.tymi.R
 import com.tymi.interfaces.ILoginActivity
+import com.tymi.utils.DrawableUtils
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -34,6 +35,8 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
     }
 
     private fun initViews() {
+        DrawableUtils.setCompoundDrawableLocale(et_email, R.drawable.ic_user_name)
+        DrawableUtils.setCompoundDrawableLocale(et_password, R.drawable.ic_password)
         et_email?.addTextChangedListener(GenericTextWatcher(et_email as EditText, this))
         et_password?.addTextChangedListener(GenericTextWatcher(et_password as EditText, this))
         et_password?.setOnEditorActionListener(this)
