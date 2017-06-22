@@ -27,7 +27,7 @@ class DataModel {
     var incidents = ArrayList<Incident>()
         get() = field
 
-    fun getFilteredIncidents(id: Int): ArrayList<Incident> {
-        return incidents.filter { it.statusId == id } as ArrayList<Incident>
+    fun getFilteredIncidents(id: String): ArrayList<Incident> {
+        return incidents.filter { it.statusId.contentEquals(id) } as ArrayList<Incident>
     }
 }

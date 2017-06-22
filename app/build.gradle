@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 26
@@ -13,13 +14,24 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "env"
     productFlavors {
+        dev {
+            dimension "env"
+            applicationId = "com.tymi.dev"
+        }
+
+        production {
+            dimension "env"
+        }
     }
 }
 
@@ -28,7 +40,10 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.android.support:design:26.0.0-beta2'
     implementation 'com.android.support:appcompat-v7:26.0.0-beta2'
+    implementation 'com.google.firebase:firebase-auth:9.0.0'
+    implementation 'com.google.firebase:firebase-database:9.0.0'
 }
+
 repositories {
     mavenCentral()
 }

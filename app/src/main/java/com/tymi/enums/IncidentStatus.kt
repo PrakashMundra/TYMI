@@ -5,7 +5,7 @@ import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.LookUp
 
-enum class IncidentStatus(var id: Int, var title: Int) {
+enum class IncidentStatus(var id: String, var title: Int) {
     OPEN(Constants.STATUS_OPEN, R.string.open),
     CLOSE(Constants.STATUS_CLOSE, R.string.close);
 

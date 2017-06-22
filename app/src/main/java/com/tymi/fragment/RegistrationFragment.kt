@@ -9,10 +9,14 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.LookUp
-import com.tymi.entity.Profile
+import com.tymi.entity.UserProfile
+import com.tymi.interfaces.IDataCallback
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_registration.*
 
@@ -60,10 +64,16 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
     private fun setRoles() {
         val roles = getDataModel().roles
         if (roles.size == 0) {
-            //ToDO load roles from Server
-            roles.add(LookUp(1, "One"))
-        }
-        role?.setAdapterWithDefault(roles)
+            loadDataWithoutUser(Constants.DataBase.ROLES, object : IDataCallback {
+                override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
+                    data.children.forEach { child ->
+                        roles.add(child.getValue(LookUp::class.java))
+                    }
+                    role?.setAdapterWithDefault(roles)
+                }
+            })
+        } else
+            role?.setAdapterWithDefault(roles)
     }
 
     private fun setProfile() {
@@ -112,20 +122,39 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
 
     private fun doRegister() {
         if (validations()) {
-            var id = 1
-            if (isEdit) {
-                val profile = getDataModel().profile
-                if (profile != null)
-                    id = profile.id
-            }
-            val profile = Profile(id,
-                    et_full_name?.text.toString(),
-                    et_email?.text.toString(),
+//            var id = 1
+//            if (isEdit) {
+//                val profile = getDataModel().profile
+//                if (profile != null)
+//                    id = profile.id
+//            }
+//            val profile = Profile(id,
+//                    et_full_name?.text.toString(),
+//                    et_email?.text.toString(),
+//                    role?.getSelectedItem() as LookUp,
+//                    et_dob.getValue())
+//            getDataModel().profile = profile
+            val email = et_email?.text.toString()
+            val password = et_password?.text.toString()
+            val userProfile = UserProfile(et_full_name?.text.toString(),
                     role?.getSelectedItem() as LookUp,
                     et_dob.getValue())
-            getDataModel().profile = profile
-            activity.setResult(Activity.RESULT_OK)
-            activity.finish()
+            mFireBaseAuth?.createUserWithEmailAndPassword(email, password)?.
+                    addOnSuccessListener {
+                        val user = mFireBaseAuth?.currentUser
+                        mDataBase?.child(Constants.DataBase.USER_PROFILE)?.child(user?.uid)?.setValue(userProfile)?.
+                                addOnSuccessListener {
+                                    activity.setResult(Activity.RESULT_OK)
+                                    activity.finish()
+                                }?.
+                                addOnFailureListener { e ->
+                                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                                }
+                    }?.
+                    addOnFailureListener { e ->
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }
+
         } else
             scrollToErrorView()
     }
@@ -149,7 +178,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
 
         val selectedRole = role?.getSelectedItem()
         if (selectedRole != null && selectedRole is LookUp) {
-            if (selectedRole.id == Constants.DEFAULT_ID) {
+            if (selectedRole.id.contentEquals(Constants.DEFAULT_LOOK_ID)) {
                 role?.isSelected = true
                 setErrorView(role as View)
                 isValid = false

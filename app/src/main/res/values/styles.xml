@@ -72,6 +72,7 @@
         <item name="android:background">@drawable/selector_spinner</item>
         <item name="android:popupBackground">@drawable/selector_spinner</item>
         <item name="android:overScrollMode">never</item>
+        <item name="android:minHeight">@dimen/et_min_ht</item>
     </style>
 
     <style name="Spinner.DropDownItem" parent="@style/Widget.AppCompat.DropDownItem.Spinner">

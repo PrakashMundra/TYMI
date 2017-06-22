@@ -3,17 +3,17 @@ package com.tymi.entity
 import android.os.Parcel
 import android.os.Parcelable
 
-data class LookUp(val id: Int, val title: String) : Parcelable {
+data class LookUp(val id: String = "", val title: String = "") : Parcelable {
     override fun toString(): String {
         return title
     }
 
     constructor(source: Parcel) : this(
-            source.readInt(),
+            source.readString(),
             source.readString())
 
     override fun writeToParcel(dest: Parcel?, p1: Int) {
-        dest?.writeInt(id)
+        dest?.writeString(id)
         dest?.writeString(title)
     }
 

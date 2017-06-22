@@ -3,13 +3,13 @@ package com.tymi.entity
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Incident(var id: Int, var statusId: Int, var profile: LookUp, var incident: LookUp, var cause: String,
+data class Incident(var id: String, var statusId: String, var profile: LookUp, var incident: LookUp, var cause: String,
                     var startDate: String, var medication: String, var notes: String,
                     var endDate: String, var expenses: String, var hospital: String) : Parcelable {
 
     constructor(source: Parcel) : this(
-            source.readInt(),
-            source.readInt(),
+            source.readString(),
+            source.readString(),
             source.readValue(LookUp::class.java.classLoader) as LookUp,
             source.readValue(LookUp::class.java.classLoader) as LookUp,
             source.readString(),
@@ -21,8 +21,8 @@ data class Incident(var id: Int, var statusId: Int, var profile: LookUp, var inc
             source.readString())
 
     override fun writeToParcel(dest: Parcel?, p1: Int) {
-        dest?.writeInt(id)
-        dest?.writeInt(statusId)
+        dest?.writeString(id)
+        dest?.writeString(statusId)
         dest?.writeValue(profile)
         dest?.writeValue(incident)
         dest?.writeString(cause)

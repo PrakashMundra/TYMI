@@ -47,7 +47,7 @@ class SpinnerWidget : BaseWidget, AdapterView.OnItemSelectedListener {
 
     fun setAdapterWithDefault(lookUps: ArrayList<LookUp>) {
         this.mLookUps = ArrayList<LookUp>()
-        this.mLookUps?.add(LookUp(Constants.DEFAULT_ID, context.getString(R.string.select)))
+        this.mLookUps?.add(LookUp(Constants.DEFAULT_LOOK_ID, context.getString(R.string.select)))
         this.mLookUps?.addAll(lookUps)
         val adapter = SpinnerAdapter(context, R.layout.list_item_spinner, mLookUps!!)
         widget_spinner?.adapter = adapter
@@ -77,17 +77,17 @@ class SpinnerWidget : BaseWidget, AdapterView.OnItemSelectedListener {
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         val selectedItem = getSelectedItem()
         if (selectedItem != null && selectedItem is LookUp) {
-            if (selectedItem.id != Constants.DEFAULT_ID)
+            if (!selectedItem.id.contentEquals(Constants.DEFAULT_LOOK_ID))
                 isSelected = false
             if (iSpinnerWidget != null)
                 iSpinnerWidget?.onSpinnerSelection(mViewId, position, selectedItem)
         }
     }
 
-    fun setSelectedValue(lookUpId: Int) {
+    fun setSelectedValue(lookUpId: String) {
         if (mLookUps?.size != 0) {
             for ((index, lookUp) in mLookUps?.withIndex()!!) {
-                if (lookUp.id == lookUpId) {
+                if (lookUp.id.contentEquals(lookUpId)) {
                     widget_spinner?.setSelection(index)
                     break
                 }
@@ -98,7 +98,7 @@ class SpinnerWidget : BaseWidget, AdapterView.OnItemSelectedListener {
     fun setSelectedValue(lookUp: LookUp) {
         if (mLookUps?.size != 0) {
             for ((index, slookUp) in mLookUps?.withIndex()!!) {
-                if (slookUp.id == lookUp.id) {
+                if (slookUp.id.contentEquals(lookUp.id)) {
                     widget_spinner?.setSelection(index)
                     break
                 }

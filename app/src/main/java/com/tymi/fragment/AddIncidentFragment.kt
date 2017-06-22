@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_add_incident.*
 
 class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         GenericTextWatcher.TextWatcherHandler, TextView.OnEditorActionListener, ISpinnerWidget {
-    private var mPosition = Constants.DEFAULT_ID
+    private var mPosition = Constants.DEFAULT_POSITION
 
     companion object {
         fun newInstance(position: Int, isEdit: Boolean): AddIncidentFragment {
@@ -42,9 +42,9 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         super.onViewCreated(view, savedInstanceState)
         initViews()
         if (arguments != null) {
-            mPosition = arguments.get(Constants.Extras.POSITION) as Int
+            mPosition = arguments.getInt(Constants.Extras.POSITION)
             val isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
-            if (mPosition != Constants.DEFAULT_ID)
+            if (mPosition != Constants.DEFAULT_POSITION)
                 setIncidentData(isEdit)
         }
     }
@@ -82,7 +82,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         val incidents = getDataModel().incidentLookUps
         if (incidents.size == 0) {
             //ToDO load incidents from Server
-            incidents.add(LookUp(1, "One"))
+            incidents.add(LookUp("1", "One"))
         }
         select_incident?.setAdapterWithDefault(incidents)
     }
@@ -149,11 +149,11 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
     private fun submitIncident() {
         if (validations()) {
-            if (mPosition != Constants.DEFAULT_ID) {
+            if (mPosition != Constants.DEFAULT_POSITION) {
                 val incident = getDataModel().incidents[mPosition]
                 getDataModel().incidents[mPosition] = getIncident(incident.id)
             } else {
-                val id = getDataModel().incidents.size + 1
+                val id = "" + getDataModel().incidents.size + 1
                 getDataModel().incidents.add(getIncident(id))
             }
             activity.setResult(Activity.RESULT_OK)
@@ -162,7 +162,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
             scrollToErrorView()
     }
 
-    private fun getIncident(id: Int): Incident {
+    private fun getIncident(id: String): Incident {
         val selectedStatus = status?.getSelectedItem() as LookUp
         return Incident(id,
                 selectedStatus.id,
@@ -181,21 +181,21 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         mErrorView = null
         var isValid = true
         val selectedStatus = status?.getSelectedItem() as LookUp
-        if (selectedStatus.id == Constants.DEFAULT_ID) {
+        if (selectedStatus.id.contentEquals(Constants.DEFAULT_LOOK_ID)) {
             status?.isSelected = true
             setErrorView(status as View)
             isValid = false
         }
 
         val profile = select_profile?.getSelectedItem() as LookUp
-        if (profile.id == Constants.DEFAULT_ID) {
+        if (profile.id.contentEquals(Constants.DEFAULT_LOOK_ID)) {
             select_profile?.isSelected = true
             setErrorView(select_profile as View)
             isValid = false
         }
 
         val incident = select_incident?.getSelectedItem() as LookUp
-        if (incident.id == Constants.DEFAULT_ID) {
+        if (incident.id.contentEquals(Constants.DEFAULT_LOOK_ID)) {
             select_incident?.isSelected = true
             setErrorView(select_incident as View)
             isValid = false

@@ -43,7 +43,7 @@ class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>
                 }
                 itemView.item_profile.text = incident.profile.title
                 itemView.item_incident.text = incident.incident.title
-                if (incident.statusId == Constants.STATUS_OPEN) {
+                if (incident.statusId.contentEquals(Constants.STATUS_OPEN)) {
                     itemView.item_start_date.text = incident.startDate
                     itemView.item_start_date.visibility = View.VISIBLE
                     itemView.item_end_date.visibility = View.GONE

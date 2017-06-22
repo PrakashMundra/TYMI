@@ -8,11 +8,19 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.tymi.Constants
 import com.tymi.R
+import com.tymi.entity.Profile
+import com.tymi.entity.UserProfile
+import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ILoginActivity
 import com.tymi.utils.DrawableUtils
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_login.*
+
 
 class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorActionListener,
         GenericTextWatcher.TextWatcherHandler {
@@ -77,9 +85,31 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
     }
 
     private fun doLogin() {
-        //if (validations()) {
-        ILoginActivity?.showHome()
-        //}
+        if (validations()) {
+            val email = et_email?.text.toString()
+            val password = et_password?.text.toString()
+            mFireBaseAuth?.signInWithEmailAndPassword(email, password)?.
+                    addOnSuccessListener {
+                        loadData(Constants.DataBase.USER_PROFILE, object : IDataCallback {
+                            override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
+                                val userProfile = data.getValue(UserProfile::class.java)
+                                val profile = Profile(user?.uid!!,
+                                        userProfile.fullName,
+                                        user?.email!!,
+                                        userProfile.role,
+                                        userProfile.dateOfBirth
+                                )
+                                getDataModel().profile = profile
+                                ILoginActivity?.showHome()
+                            }
+                        })
+                    }?.
+                    addOnFailureListener { e ->
+                        et_email?.isSelected = true
+                        et_password?.isSelected = true
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }
+        }
     }
 
     private fun validations(): Boolean {

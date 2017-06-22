@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.View
 import android.widget.EditText
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.LookUp
 import com.tymi.entity.Profile
+import com.tymi.interfaces.IDataCallback
+import com.tymi.interfaces.ISaveDataCallback
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_add_profile.*
 
 class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatcher.TextWatcherHandler {
-    private var mPosition = Constants.DEFAULT_ID
+    private var mPosition = Constants.DEFAULT_POSITION
 
     companion object {
         fun newInstance(position: Int): AddProfileFragment {
@@ -33,8 +37,8 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
         super.onViewCreated(view, savedInstanceState)
         initViews()
         if (arguments != null) {
-            mPosition = arguments.get(Constants.Extras.POSITION) as Int
-            if (mPosition != Constants.DEFAULT_ID)
+            mPosition = arguments.getInt(Constants.Extras.POSITION)
+            if (mPosition != Constants.DEFAULT_POSITION)
                 setProfileData()
         }
     }
@@ -50,10 +54,16 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
     private fun setRoles() {
         val roles = getDataModel().roles
         if (roles.size == 0) {
-            //ToDO load lookups from Server
-            roles.add(LookUp(1, "One"))
-        }
-        role?.setAdapterWithDefault(roles)
+            loadDataWithoutUser(Constants.DataBase.ROLES, object : IDataCallback {
+                override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
+                    data.children.forEach { child ->
+                        roles.add(child.getValue(LookUp::class.java))
+                    }
+                    role?.setAdapterWithDefault(roles)
+                }
+            })
+        } else
+            role?.setAdapterWithDefault(roles)
     }
 
     private fun setProfileData() {
@@ -86,19 +96,25 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
 
     private fun submitProfile() {
         if (validations()) {
-            if (mPosition != Constants.DEFAULT_ID) {
+            if (mPosition != Constants.DEFAULT_POSITION) {
                 val profile = getDataModel().childProfiles[mPosition]
                 getDataModel().childProfiles[mPosition] = getProfile(profile.id)
+                //TODO update data in FireBase
             } else {
-                val id = getDataModel().childProfiles.size + 1
-                getDataModel().childProfiles.add(getProfile(id))
+                val key = mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.push()?.key
+                val profile = getProfile(key!!)
+                saveArrayData(Constants.DataBase.CHILD_PROFILES, profile, object : ISaveDataCallback {
+                    override fun onSaveDataCallback(user: FirebaseUser?, isSuccess: Boolean) {
+                        getDataModel().childProfiles.add(profile)
+                        activity.setResult(Activity.RESULT_OK)
+                        activity.finish()
+                    }
+                })
             }
-            activity.setResult(Activity.RESULT_OK)
-            activity.finish()
         }
     }
 
-    private fun getProfile(id: Int): Profile {
+    private fun getProfile(id: String): Profile {
         return Profile(id,
                 et_full_name?.text.toString(),
                 "",
@@ -116,7 +132,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
 
         val selectedRole = role?.getSelectedItem()
         if (selectedRole != null && selectedRole is LookUp) {
-            if (selectedRole.id == Constants.DEFAULT_ID) {
+            if (selectedRole.id.contentEquals(Constants.DEFAULT_LOOK_ID)) {
                 role?.isSelected = true
                 isValid = false
             }
