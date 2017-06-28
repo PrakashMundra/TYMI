@@ -47,7 +47,7 @@ object AppPreferences {
         return prefs?.getBoolean(key, true)!!
     }
 
-    fun clearAllData() {
+    fun clearData() {
         prefs?.edit()?.clear()?.apply()
     }
 }

@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.tymi.AppPreferences
 import com.tymi.Constants
 import com.tymi.R
+import com.tymi.TYMIApp
 import com.tymi.entity.Profile
 import com.tymi.entity.UserProfile
 import com.tymi.interfaces.IDataCallback
@@ -95,7 +96,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
         if (validations()) {
             val email = et_email?.text.toString()
             val password = et_password?.text.toString()
-            mFireBaseAuth?.signInWithEmailAndPassword(email, password)?.
+            TYMIApp.mFireBaseAuth?.signInWithEmailAndPassword(email, password)?.
                     addOnSuccessListener {
                         loadData(Constants.DataBase.USER_PROFILE, object : IDataCallback {
                             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {

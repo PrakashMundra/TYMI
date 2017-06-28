@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
 import com.tymi.R
+import com.tymi.TYMIApp
 import com.tymi.entity.LookUp
 import com.tymi.entity.UserProfile
 import com.tymi.interfaces.IDataCallback
@@ -41,11 +42,6 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        if (arguments != null) {
-            isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
-            if (isEdit)
-                setProfile()
-        }
     }
 
     private fun initViews() {
@@ -70,21 +66,29 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
                         roles.add(child.getValue(LookUp::class.java))
                     }
                     role?.setAdapterWithDefault(roles)
+                    setProfile()
                 }
             })
-        } else
+        } else {
             role?.setAdapterWithDefault(roles)
+            setProfile()
+        }
     }
 
     private fun setProfile() {
-        val profile = getDataModel().profile
-        if (profile != null) {
-            et_full_name?.text = SpannableStringBuilder(profile.fullName)
-            et_email?.text = SpannableStringBuilder(profile.email)
-            role?.setSelectedValue(profile.role)
-            et_dob?.setValue(profile.dateOfBirth)
-            et_password?.text = SpannableStringBuilder("")
-            et_confirm_password.text = SpannableStringBuilder("")
+        if (arguments != null) {
+            isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
+            if (isEdit) {
+                val profile = getDataModel().profile
+                if (profile != null) {
+                    et_full_name?.text = SpannableStringBuilder(profile.fullName)
+                    et_email?.text = SpannableStringBuilder(profile.email)
+                    role?.setSelectedValue(profile.role)
+                    et_dob?.setValue(profile.dateOfBirth)
+                    et_password?.text = SpannableStringBuilder("")
+                    et_confirm_password.text = SpannableStringBuilder("")
+                }
+            }
         }
     }
 
@@ -139,10 +143,10 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             val userProfile = UserProfile(et_full_name?.text.toString(),
                     role?.getSelectedItem() as LookUp,
                     et_dob.getValue())
-            mFireBaseAuth?.createUserWithEmailAndPassword(email, password)?.
+            TYMIApp.mFireBaseAuth?.createUserWithEmailAndPassword(email, password)?.
                     addOnSuccessListener {
-                        val user = mFireBaseAuth?.currentUser
-                        mDataBase?.child(Constants.DataBase.USER_PROFILE)?.child(user?.uid)?.setValue(userProfile)?.
+                        val user = TYMIApp.mFireBaseAuth?.currentUser
+                        TYMIApp.mDataBase?.child(Constants.DataBase.USER_PROFILE)?.child(user?.uid)?.setValue(userProfile)?.
                                 addOnSuccessListener {
                                     activity.setResult(Activity.RESULT_OK)
                                     activity.finish()

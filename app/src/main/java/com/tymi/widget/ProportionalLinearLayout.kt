@@ -13,6 +13,6 @@ class ProportionalLinearLayout : LinearLayout {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val w = this.measuredWidth
-        setMeasuredDimension(w, w)
+        setMeasuredDimension(w, w.times(0.75).toInt())
     }
 }

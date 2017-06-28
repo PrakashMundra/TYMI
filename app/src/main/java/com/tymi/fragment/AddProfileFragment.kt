@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
 import com.tymi.R
+import com.tymi.TYMIApp
 import com.tymi.entity.LookUp
 import com.tymi.entity.Profile
 import com.tymi.interfaces.IDataCallback
@@ -111,7 +112,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                     }
                 })
             } else {
-                val key = mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.push()?.key
+                val key = TYMIApp.mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.push()?.key
                 val profile = getProfile(key!!)
                 saveArrayData(Constants.DataBase.CHILD_PROFILES, key, profile, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {

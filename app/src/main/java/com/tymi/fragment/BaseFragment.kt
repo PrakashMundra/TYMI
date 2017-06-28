@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.tymi.AppPreferences
+import com.tymi.TYMIApp
 import com.tymi.controllers.DataController
 import com.tymi.entity.DataModel
 import com.tymi.interfaces.ContextHolder
@@ -23,8 +25,6 @@ import com.tymi.widget.SpinnerWidget
 abstract class BaseFragment : Fragment(), ContextHolder {
     var mScrollView: ScrollView? = null
     var mErrorView: View? = null
-    var mFireBaseAuth: FirebaseAuth? = null
-    var mDataBase: DatabaseReference? = null
 
     override fun getContext(): Context {
         return activity
@@ -33,12 +33,6 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(getContainerLayoutId(), container, false)
         return view
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mFireBaseAuth = FirebaseAuth.getInstance()
-        mDataBase = FirebaseDatabase.getInstance().reference
     }
 
     protected abstract fun getContainerLayoutId(): Int
@@ -81,7 +75,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     }
 
     fun loadDataWithoutUser(child: String, iDataCallback: IDataCallback) {
-        mDataBase?.child(child)?.
+        TYMIApp.mDataBase?.child(child)?.
                 addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(error: DatabaseError?) {
                         Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
@@ -94,9 +88,9 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     }
 
     fun loadData(child: String, iDataCallback: IDataCallback) {
-        val user = mFireBaseAuth?.currentUser
+        val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
-            mDataBase?.child(child)?.child(user.uid)?.
+            TYMIApp.mDataBase?.child(child)?.child(user.uid)?.
                     addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
                             Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
@@ -111,9 +105,9 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     }
 
     fun saveArrayData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
-        val user = mFireBaseAuth?.currentUser
+        val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
-            mDataBase?.child(child)?.child(user.uid)?.child(key)?.setValue(T)?.
+            TYMIApp.mDataBase?.child(child)?.child(user.uid)?.child(key)?.setValue(T)?.
                     addOnSuccessListener {
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
@@ -125,9 +119,9 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     }
 
     fun updateData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
-        val user = mFireBaseAuth?.currentUser
+        val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
-            mDataBase?.child(child)?.child(user.uid)?.child(key)?.
+            TYMIApp.mDataBase?.child(child)?.child(user.uid)?.child(key)?.
                     setValue(T)?.
                     addOnSuccessListener {
                         iSaveDataCallback.onSaveDataCallback(user)

@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
 import com.tymi.R
+import com.tymi.TYMIApp
 import com.tymi.entity.Incident
 import com.tymi.entity.LookUp
 import com.tymi.entity.Profile
@@ -198,7 +199,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                     }
                 })
             } else {
-                val key = mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.push()?.key
+                val key = TYMIApp.mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.push()?.key
                 val incident = getIncident(key!!)
                 saveArrayData(Constants.DataBase.INCIDENT_REPORTS, key, incident, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {

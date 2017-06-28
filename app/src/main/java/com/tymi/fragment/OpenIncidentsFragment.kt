@@ -32,7 +32,9 @@ class OpenIncidentsFragment : BaseFragment() {
     }
 
     fun updateData() {
-        val adapter = incidents_recyclerView?.adapter as IncidentsAdapter
-        adapter.updateData(getDataModel().getFilteredIncidents(Constants.STATUS_OPEN))
+        if (incidents_recyclerView != null && incidents_recyclerView?.adapter != null) {
+            val adapter = incidents_recyclerView?.adapter as IncidentsAdapter
+            adapter.updateData(getDataModel().getFilteredIncidents(Constants.STATUS_OPEN))
+        }
     }
 }

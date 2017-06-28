@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">TYMI</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="select">Select</string>
@@ -27,6 +30,7 @@
     <string name="view_profiles">View Profiles</string>
     <string name="add_incident">Add Incident</string>
     <string name="view_incidents">View Incidents</string>
+    <string name="logout">Logout</string>
 
     <!--Add Incident-->
     <string name="status">Status</string>
@@ -54,4 +58,7 @@
     <string name="incident">Incident</string>
     <string name="view_incident">View Incident</string>
     <string name="edit_incident">Edit Incident</string>
+
+    <!--messages-->
+    <string name="msg_logout">Are you sure want to Logout?</string>
 </resources>

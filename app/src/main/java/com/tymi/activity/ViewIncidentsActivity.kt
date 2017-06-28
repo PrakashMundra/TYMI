@@ -6,13 +6,12 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.tymi.Constants
 import com.tymi.R
+import com.tymi.TYMIApp
 import com.tymi.adapter.TabsAdapter
 import com.tymi.controllers.DataController
 import com.tymi.entity.Incident
@@ -39,39 +38,13 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
         super.onCreate(savedInstanceState)
         setNavigationMenu()
         initViews()
-        loadIncidents()
-    }
-
-    private fun loadIncidents() {
-        val incidents = DataController.getInstance().dataModel?.incidents
-        incidents?.clear()
-        val fireBaseAuth = FirebaseAuth.getInstance()
-        val dataBase = FirebaseDatabase.getInstance().reference
-        val user = fireBaseAuth?.currentUser
-        if (user != null) {
-            dataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
-                    addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(error: DatabaseError?) {
-                            Toast.makeText(this@ViewIncidentsActivity, error.toString(), Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onDataChange(data: DataSnapshot) {
-                            data.children.forEach { child ->
-                                val incident = child.getValue(Incident::class.java)
-                                incidents?.add(incident)
-                            }
-                            isDataUpdated = true
-                            updateData(incidents_viewpager?.currentItem!!)
-                        }
-                    })
-        } else
-            Toast.makeText(this, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 
     private fun initViews() {
         setupViewPager()
         incidents_tab_layout?.setupWithViewPager(incidents_viewpager)
         setupTabs()
+        loadIncidents()
     }
 
     private fun setupViewPager() {
@@ -130,6 +103,30 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
                 }
             }
         }
+    }
+
+    private fun loadIncidents() {
+        val incidents = DataController.getInstance().dataModel?.incidents
+        incidents?.clear()
+        val user = TYMIApp.mFireBaseAuth?.currentUser
+        if (user != null) {
+            TYMIApp.mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
+                    addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(error: DatabaseError?) {
+                            Toast.makeText(this@ViewIncidentsActivity, error.toString(), Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onDataChange(data: DataSnapshot) {
+                            data.children.forEach { child ->
+                                val incident = child.getValue(Incident::class.java)
+                                incidents?.add(incident)
+                            }
+                            isDataUpdated = true
+                            updateData(incidents_viewpager?.currentItem!!)
+                        }
+                    })
+        } else
+            Toast.makeText(this, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateData(position: Int) {

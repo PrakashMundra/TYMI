@@ -6,5 +6,6 @@
     <item name="view_profiles" type="id" />
     <item name="add_incident" type="id" />
     <item name="view_incidents" type="id" />
+    <item name="logout" type="id" />
     <item name="incidents_recyclerView" type="id" />
 </resources>
