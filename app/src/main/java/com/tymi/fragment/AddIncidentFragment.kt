@@ -8,11 +8,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.Incident
 import com.tymi.entity.LookUp
+import com.tymi.entity.Profile
 import com.tymi.enums.IncidentStatus
+import com.tymi.interfaces.IDataCallback
+import com.tymi.interfaces.ISaveDataCallback
 import com.tymi.interfaces.ISpinnerWidget
 import com.tymi.utils.DateUtils
 import com.tymi.utils.GenericTextWatcher
@@ -22,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_add_incident.*
 class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         GenericTextWatcher.TextWatcherHandler, TextView.OnEditorActionListener, ISpinnerWidget {
     private var mPosition = Constants.DEFAULT_POSITION
+    private val LOOKUPS = arrayOf(Constants.DataBase.CHILD_PROFILES, Constants.DataBase.INCIDENTS)
 
     companion object {
         fun newInstance(position: Int, isEdit: Boolean): AddIncidentFragment {
@@ -41,12 +47,6 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        if (arguments != null) {
-            mPosition = arguments.getInt(Constants.Extras.POSITION)
-            val isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
-            if (mPosition != Constants.DEFAULT_POSITION)
-                setIncidentData(isEdit)
-        }
     }
 
     private fun initViews() {
@@ -65,8 +65,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
     private fun setViewsData() {
         setStatuses()
-        setProfiles()
-        setIncidents()
+        loadLookUp(0)
     }
 
     private fun setStatuses() {
@@ -74,17 +73,55 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         status?.setAdapter(statuses)
     }
 
-    private fun setProfiles() {
-        select_profile?.setAdapterWithDefault(getDataModel().profileLookUps)
-    }
+    private fun loadLookUp(position: Int) {
+        if (position < LOOKUPS.size) {
+            val child = LOOKUPS[position]
+            when (child) {
+                Constants.DataBase.CHILD_PROFILES -> {
+                    val childProfiles = getDataModel().childProfiles
+                    if (childProfiles.size == 0) {
+                        loadData(Constants.DataBase.CHILD_PROFILES, object : IDataCallback {
+                            override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
+                                data.children.forEach { child ->
+                                    val childProfile = child.getValue(Profile::class.java)
+                                    childProfiles.add(childProfile)
+                                }
+                                select_profile?.setAdapterWithDefault(getDataModel().profileLookUps)
+                                loadLookUp(position + 1)
+                            }
+                        })
+                    } else {
+                        select_profile?.setAdapterWithDefault(getDataModel().profileLookUps)
+                        loadLookUp(position + 1)
+                    }
+                }
 
-    private fun setIncidents() {
-        val incidents = getDataModel().incidentLookUps
-        if (incidents.size == 0) {
-            //ToDO load incidents from Server
-            incidents.add(LookUp("1", "One"))
+                Constants.DataBase.INCIDENTS -> {
+                    val incidents = getDataModel().incidentLookUps
+                    if (incidents.size == 0) {
+                        loadDataWithoutUser(Constants.DataBase.INCIDENTS, object : IDataCallback {
+                            override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
+                                data.children.forEach { child ->
+                                    incidents.add(child.getValue(LookUp::class.java))
+                                }
+                                select_incident?.setAdapterWithDefault(incidents)
+                                loadLookUp(position + 1)
+                            }
+                        })
+                    } else {
+                        select_incident?.setAdapterWithDefault(incidents)
+                        loadLookUp(position + 1)
+                    }
+                }
+            }
+        } else {
+            if (arguments != null) {
+                mPosition = arguments.getInt(Constants.Extras.POSITION)
+                val isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
+                if (mPosition != Constants.DEFAULT_POSITION)
+                    setIncidentData(isEdit)
+            }
         }
-        select_incident?.setAdapterWithDefault(incidents)
     }
 
     private fun setIncidentData(isEdit: Boolean) {
@@ -152,12 +189,17 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
             if (mPosition != Constants.DEFAULT_POSITION) {
                 val incident = getDataModel().incidents[mPosition]
                 getDataModel().incidents[mPosition] = getIncident(incident.id)
+                //TODO update data in FireBase
             } else {
-                val id = "" + getDataModel().incidents.size + 1
-                getDataModel().incidents.add(getIncident(id))
+                val key = mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.push()?.key
+                val incident = getIncident(key!!)
+                saveArrayData(Constants.DataBase.INCIDENT_REPORTS, incident, object : ISaveDataCallback {
+                    override fun onSaveDataCallback(user: FirebaseUser?, isSuccess: Boolean) {
+                        activity.setResult(Activity.RESULT_OK)
+                        activity.finish()
+                    }
+                })
             }
-            activity.setResult(Activity.RESULT_OK)
-            activity.finish()
         } else
             scrollToErrorView()
     }

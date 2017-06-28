@@ -14,16 +14,21 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.tymi.activity.LoginActivity"
+            android:name="com.tymi.activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+            android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.tymi.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <activity
             android:name="com.tymi.activity.RegistrationActivity"

@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
+import com.tymi.AppPreferences
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.Profile
@@ -19,12 +20,13 @@ import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ILoginActivity
 import com.tymi.utils.DrawableUtils
 import com.tymi.utils.GenericTextWatcher
+import com.tymi.utils.JSonUtils
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorActionListener,
         GenericTextWatcher.TextWatcherHandler {
-    private var ILoginActivity: ILoginActivity? = null
+    private var iLoginActivity: ILoginActivity? = null
 
     override fun getContainerLayoutId(): Int {
         return R.layout.fragment_login
@@ -33,8 +35,13 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is ILoginActivity) {
-            ILoginActivity = context
+            iLoginActivity = context
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        iLoginActivity = null
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -57,7 +64,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
         when (view?.id) {
             R.id.btn_login -> doLogin()
             R.id.btn_forgot_password -> doForgotPassword()
-            R.id.btn_register -> ILoginActivity?.showRegistration()
+            R.id.btn_register -> iLoginActivity?.showRegistration()
         }
     }
 
@@ -95,12 +102,14 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
                                 val userProfile = data.getValue(UserProfile::class.java)
                                 val profile = Profile(user?.uid!!,
                                         userProfile.fullName,
-                                        user?.email!!,
+                                        user.email!!,
                                         userProfile.role,
                                         userProfile.dateOfBirth
                                 )
                                 getDataModel().profile = profile
-                                ILoginActivity?.showHome()
+                                val profileData = JSonUtils.toJson(profile)
+                                getAppPreferences().putString(AppPreferences.USER_PROFILE, profileData)
+                                iLoginActivity?.showHome()
                             }
                         })
                     }?.
@@ -131,8 +140,8 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
     private fun doForgotPassword() {
         val email = et_email?.text
         if (email?.trim().isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
-            ILoginActivity?.showForgotPassword(et_email?.text.toString())
+            iLoginActivity?.showForgotPassword(et_email?.text.toString())
         else
-            ILoginActivity?.showForgotPassword("")
+            iLoginActivity?.showForgotPassword("")
     }
 }

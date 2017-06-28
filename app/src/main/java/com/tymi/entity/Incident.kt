@@ -3,9 +3,17 @@ package com.tymi.entity
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Incident(var id: String, var statusId: String, var profile: LookUp, var incident: LookUp, var cause: String,
-                    var startDate: String, var medication: String, var notes: String,
-                    var endDate: String, var expenses: String, var hospital: String) : Parcelable {
+data class Incident(var id: String = "",
+                    var statusId: String = "",
+                    var profile: LookUp = LookUp("", ""),
+                    var incident: LookUp = LookUp("", ""),
+                    var cause: String = "",
+                    var startDate: String = "",
+                    var medication: String = "",
+                    var notes: String = "",
+                    var endDate: String = "",
+                    var expenses: String = "",
+                    var hospital: String = "") : Parcelable {
 
     constructor(source: Parcel) : this(
             source.readString(),

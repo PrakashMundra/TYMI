@@ -36,11 +36,6 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        if (arguments != null) {
-            mPosition = arguments.getInt(Constants.Extras.POSITION)
-            if (mPosition != Constants.DEFAULT_POSITION)
-                setProfileData()
-        }
     }
 
     private fun initViews() {
@@ -60,17 +55,25 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                         roles.add(child.getValue(LookUp::class.java))
                     }
                     role?.setAdapterWithDefault(roles)
+                    setProfileData()
                 }
             })
-        } else
+        } else {
             role?.setAdapterWithDefault(roles)
+            setProfileData()
+        }
     }
 
     private fun setProfileData() {
-        val profile = getDataModel().childProfiles[mPosition]
-        et_full_name?.text = SpannableStringBuilder(profile.fullName)
-        role?.setSelectedValue(profile.role)
-        et_dob?.setValue(profile.dateOfBirth)
+        if (arguments != null) {
+            mPosition = arguments.getInt(Constants.Extras.POSITION)
+            if (mPosition != Constants.DEFAULT_POSITION) {
+                val profile = getDataModel().childProfiles[mPosition]
+                et_full_name?.text = SpannableStringBuilder(profile.fullName)
+                role?.setSelectedValue(profile.role)
+                et_dob?.setValue(profile.dateOfBirth)
+            }
+        }
     }
 
     override fun onClick(view: View?) {
@@ -98,8 +101,21 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
         if (validations()) {
             if (mPosition != Constants.DEFAULT_POSITION) {
                 val profile = getDataModel().childProfiles[mPosition]
-                getDataModel().childProfiles[mPosition] = getProfile(profile.id)
-                //TODO update data in FireBase
+                val profileId = profile.id
+                val updatedProfile = getProfile(profileId)
+                val user = mFireBaseAuth?.currentUser
+                if (user != null) {
+                    mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.child(user.uid)?.child(profileId)?.
+                            setValue(updatedProfile)?.
+                            addOnSuccessListener {
+                                getDataModel().childProfiles[mPosition] = updatedProfile
+                                activity.setResult(Activity.RESULT_OK)
+                                activity.finish()
+                            }?.
+                            addOnFailureListener {
+
+                            }
+                }
             } else {
                 val key = mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.push()?.key
                 val profile = getProfile(key!!)

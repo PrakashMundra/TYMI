@@ -5,9 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.adapter.TabsAdapter
+import com.tymi.controllers.DataController
+import com.tymi.entity.Incident
 import com.tymi.fragment.ClosedIncidentsFragment
 import com.tymi.fragment.OpenIncidentsFragment
 import com.tymi.interfaces.IViewIncidentsActivity
@@ -31,6 +39,32 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
         super.onCreate(savedInstanceState)
         setNavigationMenu()
         initViews()
+        loadIncidents()
+    }
+
+    private fun loadIncidents() {
+        val incidents = DataController.getInstance().dataModel?.incidents
+        incidents?.clear()
+        val fireBaseAuth = FirebaseAuth.getInstance()
+        val dataBase = FirebaseDatabase.getInstance().reference
+        val user = fireBaseAuth?.currentUser
+        if (user != null) {
+            dataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
+                    addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(error: DatabaseError?) {
+                            Toast.makeText(this@ViewIncidentsActivity, error.toString(), Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onDataChange(data: DataSnapshot) {
+                            data.children.forEach { child ->
+                                val incident = child.getValue(Incident::class.java)
+                                incidents?.add(incident)
+                            }
+                            updateData(0)
+                        }
+                    })
+        } else
+            Toast.makeText(this, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 
     private fun initViews() {
@@ -79,11 +113,7 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
 
     override fun onPageSelected(position: Int) {
         if (isDataUpdated) {
-            val fragment = mTabsAdapter?.getItem(position)
-            if (fragment is OpenIncidentsFragment)
-                fragment.updateData()
-            else if (fragment is ClosedIncidentsFragment)
-                fragment.updateData()
+            updateData(position)
             isDataUpdated = false
         }
     }
@@ -95,13 +125,17 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
                 Constants.RequestCodes.INCIDENT -> {
                     isDataUpdated = true
                     val position = incidents_viewpager?.currentItem as Int
-                    val fragment = mTabsAdapter?.getItem(position)
-                    if (fragment is OpenIncidentsFragment)
-                        fragment.updateData()
-                    else if (fragment is ClosedIncidentsFragment)
-                        fragment.updateData()
+                    updateData(position)
                 }
             }
         }
+    }
+
+    private fun updateData(position: Int) {
+        val fragment = mTabsAdapter?.getItem(position)
+        if (fragment is OpenIncidentsFragment)
+            fragment.updateData()
+        else if (fragment is ClosedIncidentsFragment)
+            fragment.updateData()
     }
 }

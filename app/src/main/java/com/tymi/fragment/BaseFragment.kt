@@ -11,6 +11,7 @@ import android.widget.ScrollView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.tymi.AppPreferences
 import com.tymi.controllers.DataController
 import com.tymi.entity.DataModel
 import com.tymi.interfaces.ContextHolder
@@ -75,6 +76,10 @@ abstract class BaseFragment : Fragment(), ContextHolder {
         return DataController.getInstance().dataModel!!
     }
 
+    fun getAppPreferences(): AppPreferences {
+        return AppPreferences.getInstance(context)
+    }
+
     fun loadDataWithoutUser(child: String, iDataCallback: IDataCallback) {
         mDataBase?.child(child)?.
                 addValueEventListener(object : ValueEventListener {
@@ -101,7 +106,8 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                             iDataCallback.onDataCallback(user, data)
                         }
                     })
-        }
+        } else
+            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 
     fun saveArrayData(child: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
@@ -114,6 +120,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                     addOnFailureListener {
                         iSaveDataCallback.onSaveDataCallback(user, true)
                     }
-        }
+        } else
+            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 }

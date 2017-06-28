@@ -50,16 +50,15 @@ class ViewProfilesFragment : BaseFragment() {
         itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_child_profile))
         child_profiles_recyclerView?.addItemDecoration(itemDecoration)
         mChildProfilesAdapter = ChildProfilesAdapter(context)
-        val profiles = getDataModel().childProfiles
-        profiles.clear()
+        val childProfiles = getDataModel().childProfiles
+        childProfiles.clear()
         loadData(Constants.DataBase.CHILD_PROFILES, object : IDataCallback {
             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                 data.children.forEach { child ->
-                    System.out.println("::" + child.value)
-                    val profile = child.getValue(Profile::class.java)
-                    profiles.add(profile)
+                    val childProfile = child.getValue(Profile::class.java)
+                    childProfiles.add(childProfile)
                 }
-                mChildProfilesAdapter?.setData(profiles)
+                mChildProfilesAdapter?.setData(childProfiles)
                 child_profiles_recyclerView?.adapter = mChildProfilesAdapter
             }
         })

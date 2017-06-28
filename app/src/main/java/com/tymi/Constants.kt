@@ -21,7 +21,9 @@ object Constants {
 
     object DataBase {
         val ROLES = "Roles"
+        val INCIDENTS = "Incidents"
         val USER_PROFILE = "UserProfile"
         val CHILD_PROFILES = "ChildProfiles"
+        val INCIDENT_REPORTS = "IncidentReports"
     }
 }
