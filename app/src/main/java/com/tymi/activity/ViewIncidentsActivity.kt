@@ -50,7 +50,7 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
         val user = fireBaseAuth?.currentUser
         if (user != null) {
             dataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
-                    addValueEventListener(object : ValueEventListener {
+                    addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
                             Toast.makeText(this@ViewIncidentsActivity, error.toString(), Toast.LENGTH_SHORT).show()
                         }
@@ -60,7 +60,8 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
                                 val incident = child.getValue(Incident::class.java)
                                 incidents?.add(incident)
                             }
-                            updateData(0)
+                            isDataUpdated = true
+                            updateData(incidents_viewpager?.currentItem!!)
                         }
                     })
         } else

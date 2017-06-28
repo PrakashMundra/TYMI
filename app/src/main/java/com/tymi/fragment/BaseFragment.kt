@@ -97,7 +97,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
         val user = mFireBaseAuth?.currentUser
         if (user != null) {
             mDataBase?.child(child)?.child(user.uid)?.
-                    addValueEventListener(object : ValueEventListener {
+                    addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
                             Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
                         }
@@ -110,15 +110,30 @@ abstract class BaseFragment : Fragment(), ContextHolder {
             Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 
-    fun saveArrayData(child: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
+    fun saveArrayData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
         val user = mFireBaseAuth?.currentUser
         if (user != null) {
-            mDataBase?.child(child)?.child(user.uid)?.push()?.setValue(T)?.
+            mDataBase?.child(child)?.child(user.uid)?.child(key)?.setValue(T)?.
                     addOnSuccessListener {
-                        iSaveDataCallback.onSaveDataCallback(user, true)
+                        iSaveDataCallback.onSaveDataCallback(user)
                     }?.
-                    addOnFailureListener {
-                        iSaveDataCallback.onSaveDataCallback(user, true)
+                    addOnFailureListener { e ->
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }
+        } else
+            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
+    }
+
+    fun updateData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
+        val user = mFireBaseAuth?.currentUser
+        if (user != null) {
+            mDataBase?.child(child)?.child(user.uid)?.child(key)?.
+                    setValue(T)?.
+                    addOnSuccessListener {
+                        iSaveDataCallback.onSaveDataCallback(user)
+                    }?.
+                    addOnFailureListener { e ->
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                     }
         } else
             Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()

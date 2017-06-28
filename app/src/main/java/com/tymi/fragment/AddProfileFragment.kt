@@ -101,26 +101,20 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
         if (validations()) {
             if (mPosition != Constants.DEFAULT_POSITION) {
                 val profile = getDataModel().childProfiles[mPosition]
-                val profileId = profile.id
-                val updatedProfile = getProfile(profileId)
-                val user = mFireBaseAuth?.currentUser
-                if (user != null) {
-                    mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.child(user.uid)?.child(profileId)?.
-                            setValue(updatedProfile)?.
-                            addOnSuccessListener {
-                                getDataModel().childProfiles[mPosition] = updatedProfile
-                                activity.setResult(Activity.RESULT_OK)
-                                activity.finish()
-                            }?.
-                            addOnFailureListener {
-
-                            }
-                }
+                val id = profile.id
+                val updatedProfile = getProfile(id)
+                updateData(Constants.DataBase.CHILD_PROFILES, id, updatedProfile, object : ISaveDataCallback {
+                    override fun onSaveDataCallback(user: FirebaseUser?) {
+                        getDataModel().childProfiles[mPosition] = updatedProfile
+                        activity.setResult(Activity.RESULT_OK)
+                        activity.finish()
+                    }
+                })
             } else {
                 val key = mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.push()?.key
                 val profile = getProfile(key!!)
-                saveArrayData(Constants.DataBase.CHILD_PROFILES, profile, object : ISaveDataCallback {
-                    override fun onSaveDataCallback(user: FirebaseUser?, isSuccess: Boolean) {
+                saveArrayData(Constants.DataBase.CHILD_PROFILES, key, profile, object : ISaveDataCallback {
+                    override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().childProfiles.add(profile)
                         activity.setResult(Activity.RESULT_OK)
                         activity.finish()

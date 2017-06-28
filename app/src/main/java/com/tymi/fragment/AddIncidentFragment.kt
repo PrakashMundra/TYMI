@@ -188,13 +188,21 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         if (validations()) {
             if (mPosition != Constants.DEFAULT_POSITION) {
                 val incident = getDataModel().incidents[mPosition]
-                getDataModel().incidents[mPosition] = getIncident(incident.id)
-                //TODO update data in FireBase
+                val id = incident.id
+                val updatedIncident = getIncident(id)
+                updateData(Constants.DataBase.INCIDENT_REPORTS, id, updatedIncident, object : ISaveDataCallback {
+                    override fun onSaveDataCallback(user: FirebaseUser?) {
+                        getDataModel().incidents[mPosition] = updatedIncident
+                        activity.setResult(Activity.RESULT_OK)
+                        activity.finish()
+                    }
+                })
             } else {
                 val key = mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.push()?.key
                 val incident = getIncident(key!!)
-                saveArrayData(Constants.DataBase.INCIDENT_REPORTS, incident, object : ISaveDataCallback {
-                    override fun onSaveDataCallback(user: FirebaseUser?, isSuccess: Boolean) {
+                saveArrayData(Constants.DataBase.INCIDENT_REPORTS, key, incident, object : ISaveDataCallback {
+                    override fun onSaveDataCallback(user: FirebaseUser?) {
+                        getDataModel().incidents.add(incident)
                         activity.setResult(Activity.RESULT_OK)
                         activity.finish()
                     }
