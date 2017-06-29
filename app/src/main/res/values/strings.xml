@@ -6,6 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="select">Select</string>
+    <string name="loading">Loading&#8230;</string>
 
     <!--Login-->
     <!--<string name=""></string>-->

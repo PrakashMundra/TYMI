@@ -14,6 +14,7 @@ import com.tymi.adapter.ChildProfilesAdapter
 import com.tymi.entity.Profile
 import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.IViewProfileActivity
+import com.tymi.utils.DialogUtils
 import kotlinx.android.synthetic.main.fragment_view_profiles.*
 
 
@@ -42,6 +43,7 @@ class ViewProfilesFragment : BaseFragment() {
     }
 
     private fun initViews() {
+        DialogUtils.showProgressDialog(context)
         setProfile()
         child_profiles_recyclerView?.setHasFixedSize(true)
         child_profiles_recyclerView?.layoutManager =
@@ -60,6 +62,7 @@ class ViewProfilesFragment : BaseFragment() {
                 }
                 mChildProfilesAdapter?.setData(childProfiles)
                 child_profiles_recyclerView?.adapter = mChildProfilesAdapter
+                DialogUtils.hideProgressDialog()
             }
         })
     }

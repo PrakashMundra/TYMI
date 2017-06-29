@@ -14,6 +14,7 @@ import com.tymi.entity.LookUp
 import com.tymi.entity.Profile
 import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ISaveDataCallback
+import com.tymi.utils.DialogUtils
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_add_profile.*
 
@@ -52,6 +53,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
     private fun setRoles() {
         val roles = getDataModel().roles
         if (roles.size == 0) {
+            DialogUtils.showProgressDialog(context)
             loadDataWithoutUser(Constants.DataBase.ROLES, object : IDataCallback {
                 override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                     data.children.forEach { child ->
@@ -59,6 +61,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                     }
                     role?.setAdapterWithDefault(roles)
                     setProfileData()
+                    DialogUtils.hideProgressDialog()
                 }
             })
         } else {

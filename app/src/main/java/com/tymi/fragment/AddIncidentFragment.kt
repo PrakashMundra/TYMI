@@ -21,6 +21,7 @@ import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ISaveDataCallback
 import com.tymi.interfaces.ISpinnerWidget
 import com.tymi.utils.DateUtils
+import com.tymi.utils.DialogUtils
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_add_incident.*
 
@@ -66,6 +67,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
     private fun setViewsData() {
         setStatuses()
+        DialogUtils.showProgressDialog(context)
         loadLookUp(0)
     }
 
@@ -122,6 +124,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 if (mPosition != Constants.DEFAULT_POSITION)
                     setIncidentData(isEdit)
             }
+            DialogUtils.hideProgressDialog()
         }
     }
 

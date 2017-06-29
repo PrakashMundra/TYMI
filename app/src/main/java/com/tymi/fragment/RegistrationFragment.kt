@@ -47,12 +47,14 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
     private fun setRoles() {
         val roles = getDataModel().roles
         if (roles.size == 0) {
+            DialogUtils.showProgressDialog(context)
             loadDataWithoutUser(Constants.DataBase.ROLES, object : IDataCallback {
                 override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                     data.children.forEach { child ->
                         roles.add(child.getValue(LookUp::class.java))
                     }
                     role?.setAdapterWithDefault(roles)
+                    DialogUtils.hideProgressDialog()
                 }
             })
         } else
@@ -93,6 +95,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
 
     private fun doRegister() {
         if (validations()) {
+            DialogUtils.showProgressDialog(context)
             val email = et_email?.text.toString()
             val password = et_password?.text.toString()
             val userProfile = UserProfile(et_full_name?.text.toString(),
@@ -103,14 +106,17 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
                         val user = TYMIApp.mFireBaseAuth?.currentUser
                         TYMIApp.mDataBase?.child(Constants.DataBase.USER_PROFILE)?.child(user?.uid)?.setValue(userProfile)?.
                                 addOnSuccessListener {
+                                    DialogUtils.hideProgressDialog()
                                     activity.setResult(Activity.RESULT_OK)
                                     activity.finish()
                                 }?.
                                 addOnFailureListener { e ->
+                                    DialogUtils.hideProgressDialog()
                                     DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                                 }
                     }?.
                     addOnFailureListener { e ->
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
 

@@ -74,9 +74,11 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener, TextView.On
         if (email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
             et_email?.isSelected = true
         else {
+            DialogUtils.showProgressDialog(context)
             et_email?.isSelected = false
             TYMIApp.mFireBaseAuth?.sendPasswordResetEmail(email)?.
                     addOnSuccessListener {
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, R.string.app_name, R.string.msg_forgot_password,
                                 R.string.ok, Runnable {
                             activity.setResult(Activity.RESULT_OK)
@@ -84,6 +86,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener, TextView.On
                         })
                     }?.
                     addOnFailureListener { e ->
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         }

@@ -79,6 +79,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
         TYMIApp.mDataBase?.child(child)?.
                 addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(error: DatabaseError?) {
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, getString(R.string.app_name), error?.message!!)
                     }
 
@@ -94,6 +95,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
             TYMIApp.mDataBase?.child(child)?.child(user.uid)?.
                     addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
+                            DialogUtils.hideProgressDialog()
                             DialogUtils.showAlertDialog(context, getString(R.string.app_name), error?.message!!)
                         }
 
@@ -101,18 +103,23 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                             iDataCallback.onDataCallback(user, data)
                         }
                     })
-        } else
+        } else {
+            DialogUtils.hideProgressDialog()
             DialogUtils.showSessionExpireDialog(context)
+        }
     }
 
     fun saveArrayData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
         val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
+            DialogUtils.showProgressDialog(context)
             TYMIApp.mDataBase?.child(child)?.child(user.uid)?.child(key)?.setValue(T)?.
                     addOnSuccessListener {
+                        DialogUtils.hideProgressDialog()
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
                     addOnFailureListener { e ->
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         } else
@@ -122,11 +129,14 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     fun updateDataUserLevel(child: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
         val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
+            DialogUtils.showProgressDialog(context)
             TYMIApp.mDataBase?.child(child)?.child(user.uid)?.setValue(T)?.
                     addOnSuccessListener {
+                        DialogUtils.hideProgressDialog()
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
                     addOnFailureListener { e ->
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         } else
@@ -136,9 +146,11 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     fun updateData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
         val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
+            DialogUtils.showProgressDialog(context)
             TYMIApp.mDataBase?.child(child)?.child(user.uid)?.child(key)?.
                     setValue(T)?.
                     addOnSuccessListener {
+                        DialogUtils.hideProgressDialog()
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
                     addOnFailureListener { e ->

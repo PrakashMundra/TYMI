@@ -110,9 +110,11 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
         incidents?.clear()
         val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {
+            DialogUtils.showProgressDialog(this)
             TYMIApp.mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
                     addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
+                            DialogUtils.hideProgressDialog()
                             DialogUtils.showAlertDialog(this@ViewIncidentsActivity,
                                     getString(R.string.app_name), error?.message!!)
                         }
@@ -124,6 +126,7 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
                             }
                             isDataUpdated = true
                             updateData(incidents_viewpager?.currentItem!!)
+                            DialogUtils.hideProgressDialog()
                         }
                     })
         } else

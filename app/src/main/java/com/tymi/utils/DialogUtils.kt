@@ -2,9 +2,11 @@ package com.tymi.utils
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.view.Window
 import com.tymi.AppPreferences
 import com.tymi.R
 import com.tymi.TYMIApp
@@ -12,6 +14,8 @@ import com.tymi.activity.LoginActivity
 import com.tymi.interfaces.IDialogThemeProvider
 
 object DialogUtils {
+    private var mDialog: Dialog? = null
+
     fun showAlertDialog(context: Context, message: String) {
         showAlertDialog(context, null, message, null, null, null, null, null, null)
     }
@@ -115,5 +119,18 @@ object DialogUtils {
             context.startActivity(intent)
             (context as Activity).finish()
         })
+    }
+
+    fun showProgressDialog(context: Context) {
+        mDialog = Dialog(context)
+        mDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mDialog?.setContentView(R.layout.dlg_progress)
+        mDialog?.setCancelable(false)
+        mDialog?.show()
+    }
+
+    fun hideProgressDialog() {
+        if (mDialog != null && mDialog?.isShowing!!)
+            mDialog?.dismiss()
     }
 }

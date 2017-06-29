@@ -12,8 +12,8 @@
         android:useLevel="false">
 
         <size
-            android:width="100dp"
-            android:height="100dp" />
+            android:width="60dp"
+            android:height="60dp" />
 
         <gradient
             android:centerColor="@color/colorPrimary"

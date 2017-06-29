@@ -102,6 +102,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
 
     private fun doLogin() {
         if (validations()) {
+            DialogUtils.showProgressDialog(context)
             val email = et_email?.text.toString()
             val password = et_password?.text.toString()
             TYMIApp.mFireBaseAuth?.signInWithEmailAndPassword(email, password)?.
@@ -118,6 +119,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
                                 getDataModel().profile = profile
                                 val profileData = JSonUtils.toJson(profile)
                                 getAppPreferences().putString(AppPreferences.USER_PROFILE, profileData)
+                                DialogUtils.hideProgressDialog()
                                 iLoginActivity?.showHome()
                             }
                         })
@@ -125,6 +127,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
                     addOnFailureListener { e ->
                         et_email?.isSelected = true
                         et_password?.isSelected = true
+                        DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         }
