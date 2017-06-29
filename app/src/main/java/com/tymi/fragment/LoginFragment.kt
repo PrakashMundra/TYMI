@@ -109,7 +109,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
                     addOnSuccessListener {
                         loadData(Constants.DataBase.USER_PROFILE, object : IDataCallback {
                             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
-                                val userProfile = data.getValue(UserProfile::class.java)
+                                val userProfile = data.getValue(UserProfile::class.java)!!
                                 val profile = Profile(user?.uid!!,
                                         userProfile.fullName,
                                         user.email!!,

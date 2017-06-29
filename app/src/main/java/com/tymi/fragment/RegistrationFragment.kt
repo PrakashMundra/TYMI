@@ -51,7 +51,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             loadDataWithoutUser(Constants.DataBase.ROLES, object : IDataCallback {
                 override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                     data.children.forEach { child ->
-                        roles.add(child.getValue(LookUp::class.java))
+                        roles.add(child.getValue(LookUp::class.java)!!)
                     }
                     role?.setAdapterWithDefault(roles)
                     DialogUtils.hideProgressDialog()

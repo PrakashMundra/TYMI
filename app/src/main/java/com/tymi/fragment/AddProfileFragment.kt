@@ -57,7 +57,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
             loadDataWithoutUser(Constants.DataBase.ROLES, object : IDataCallback {
                 override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                     data.children.forEach { child ->
-                        roles.add(child.getValue(LookUp::class.java))
+                        roles.add(child.getValue(LookUp::class.java)!!)
                     }
                     role?.setAdapterWithDefault(roles)
                     setProfileData()

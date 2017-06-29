@@ -2,6 +2,7 @@ package com.tymi.fragment
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.view.KeyEvent
 import android.view.View
@@ -29,6 +30,8 @@ import kotlinx.android.synthetic.main.fragment_add_incident.*
 class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         GenericTextWatcher.TextWatcherHandler, TextView.OnEditorActionListener, ISpinnerWidget {
     private var mPosition = Constants.DEFAULT_POSITION
+    private var isEdit: Boolean = false
+
     private val LOOKUPS = arrayOf(Constants.DataBase.CHILD_PROFILES, Constants.DataBase.INCIDENTS)
 
     companion object {
@@ -87,7 +90,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                                 data.children.forEach { child ->
                                     val childProfile = child.getValue(Profile::class.java)
-                                    childProfiles.add(childProfile)
+                                    childProfiles.add(childProfile!!)
                                 }
                                 select_profile?.setAdapterWithDefault(getDataModel().profileLookUps)
                                 loadLookUp(position + 1)
@@ -105,7 +108,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                         loadDataWithoutUser(Constants.DataBase.INCIDENTS, object : IDataCallback {
                             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                                 data.children.forEach { child ->
-                                    incidents.add(child.getValue(LookUp::class.java))
+                                    incidents.add(child.getValue(LookUp::class.java)!!)
                                 }
                                 select_incident?.setAdapterWithDefault(incidents)
                                 loadLookUp(position + 1)
@@ -120,15 +123,15 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         } else {
             if (arguments != null) {
                 mPosition = arguments.getInt(Constants.Extras.POSITION)
-                val isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
+                isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
                 if (mPosition != Constants.DEFAULT_POSITION)
-                    setIncidentData(isEdit)
+                    setIncidentData()
             }
             DialogUtils.hideProgressDialog()
         }
     }
 
-    private fun setIncidentData(isEdit: Boolean) {
+    private fun setIncidentData() {
         val incident = getDataModel().incidents[mPosition]
         status?.setSelectedValue(incident.statusId)
         select_profile?.setSelectedValue(incident.profile)
@@ -144,6 +147,10 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
             disableAllFields(add_incident)
             add_incident_buttons?.visibility = View.GONE
         }
+        Handler().postDelayed({
+            if (!isEdit)
+                end_date?.isEnabled = false
+        }, 1000)
     }
 
     override fun onClick(view: View?) {

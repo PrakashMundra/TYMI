@@ -122,7 +122,7 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
                         override fun onDataChange(data: DataSnapshot) {
                             data.children.forEach { child ->
                                 val incident = child.getValue(Incident::class.java)
-                                incidents?.add(incident)
+                                incidents?.add(incident!!)
                             }
                             isDataUpdated = true
                             updateData(incidents_viewpager?.currentItem!!)

@@ -58,7 +58,7 @@ class ViewProfilesFragment : BaseFragment() {
             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
                 data.children.forEach { child ->
                     val childProfile = child.getValue(Profile::class.java)
-                    childProfiles.add(childProfile)
+                    childProfiles.add(childProfile!!)
                 }
                 mChildProfilesAdapter?.setData(childProfiles)
                 child_profiles_recyclerView?.adapter = mChildProfilesAdapter
