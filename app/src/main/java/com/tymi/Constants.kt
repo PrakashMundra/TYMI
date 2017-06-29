@@ -11,13 +11,15 @@ object Constants {
     object Extras {
         val POSITION = "POSITION"
         val EDIT = "EDIT"
+        val EMAIL = "EMAIL"
     }
 
     object RequestCodes {
         val REGISTRATION = 0x100
-        val PROFILE = 0x101
-        val CHILD_PROFILE = 0x102
-        val INCIDENT = 0x103
+        val FORGOT_PASSWORD = 0x101
+        val PROFILE = 0x102
+        val CHILD_PROFILE = 0x103
+        val INCIDENT = 0x104
     }
 
     object DataBase {

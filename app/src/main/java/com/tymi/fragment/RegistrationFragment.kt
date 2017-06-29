@@ -8,7 +8,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
@@ -17,6 +16,7 @@ import com.tymi.TYMIApp
 import com.tymi.entity.LookUp
 import com.tymi.entity.UserProfile
 import com.tymi.interfaces.IDataCallback
+import com.tymi.utils.DialogUtils
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_registration.*
 
@@ -107,11 +107,11 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
                                     activity.finish()
                                 }?.
                                 addOnFailureListener { e ->
-                                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                                    DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                                 }
                     }?.
                     addOnFailureListener { e ->
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
 
         } else

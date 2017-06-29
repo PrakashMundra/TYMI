@@ -12,8 +12,8 @@ import android.view.View
 import com.tymi.AppPreferences
 import com.tymi.R
 import com.tymi.TYMIApp
+import com.tymi.utils.DialogUtils
 import com.tymi.utils.DrawableUtils
-import com.tymi.widget.DialogUtils
 import kotlinx.android.synthetic.main.actvity_navigation_base.*
 
 

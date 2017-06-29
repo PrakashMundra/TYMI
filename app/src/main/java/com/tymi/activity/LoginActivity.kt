@@ -31,7 +31,9 @@ class LoginActivity : BaseActivity(), ILoginActivity {
     }
 
     override fun showForgotPassword(email: String) {
-
+        val registrationIntent = Intent(this, ForgotPasswordActivity::class.java)
+        registrationIntent.putExtra(Constants.Extras.EMAIL, email)
+        startActivityForResult(registrationIntent, Constants.RequestCodes.FORGOT_PASSWORD)
     }
 
     override fun showRegistration() {
@@ -41,7 +43,10 @@ class LoginActivity : BaseActivity(), ILoginActivity {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == Constants.RequestCodes.REGISTRATION)
-            mLoginFragment?.clearFields()
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.RequestCodes.REGISTRATION ||
+                    requestCode == Constants.RequestCodes.FORGOT_PASSWORD)
+                mLoginFragment?.clearFields()
+        }
     }
 }

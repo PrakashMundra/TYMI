@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
-import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -18,6 +17,7 @@ import com.tymi.entity.Incident
 import com.tymi.fragment.ClosedIncidentsFragment
 import com.tymi.fragment.OpenIncidentsFragment
 import com.tymi.interfaces.IViewIncidentsActivity
+import com.tymi.utils.DialogUtils
 import kotlinx.android.synthetic.main.activity_view_incidents.*
 import kotlinx.android.synthetic.main.list_item_tab.view.*
 
@@ -113,7 +113,8 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
             TYMIApp.mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
                     addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
-                            Toast.makeText(this@ViewIncidentsActivity, error.toString(), Toast.LENGTH_SHORT).show()
+                            DialogUtils.showAlertDialog(this@ViewIncidentsActivity,
+                                    getString(R.string.app_name), error?.message!!)
                         }
 
                         override fun onDataChange(data: DataSnapshot) {
@@ -126,7 +127,7 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
                         }
                     })
         } else
-            Toast.makeText(this, "Session has been Expired", Toast.LENGTH_SHORT).show()
+            DialogUtils.showSessionExpireDialog(getContext())
     }
 
     private fun updateData(position: Int) {

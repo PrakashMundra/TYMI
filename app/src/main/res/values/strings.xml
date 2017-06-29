@@ -24,6 +24,10 @@
     <string name="dob">Date of Birth</string>
     <string name="confirm_password">Confirm Password</string>
 
+    <!--Forgot Password-->
+    <string name="forgot_password_text">Please enter an Email to receive Instructions for resetting a Password</string>
+    <string name="send">Send</string>
+
     <!--Home-->
     <string name="dashboard">DashBoard</string>
     <string name="add_profile">Add Profile</string>
@@ -60,5 +64,7 @@
     <string name="edit_incident">Edit Incident</string>
 
     <!--messages-->
+    <string name="msg_forgot_password">We have a sent mail with Instructions to reset your Password.</string>
     <string name="msg_logout">Are you sure want to Logout?</string>
+    <string name="msg_session_expire">Session has been Expired, Please re-login into the application.</string>
 </resources>

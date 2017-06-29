@@ -1,9 +1,14 @@
-package com.tymi.widget
+package com.tymi.utils
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import com.tymi.AppPreferences
 import com.tymi.R
+import com.tymi.TYMIApp
+import com.tymi.activity.LoginActivity
 import com.tymi.interfaces.IDialogThemeProvider
 
 object DialogUtils {
@@ -99,7 +104,16 @@ object DialogUtils {
         builder.create().show()
     }
 
-    interface DialogThemeProvider {
-        val dialogTheme: Int
+    fun showSessionExpireDialog(context: Context) {
+        showAlertDialog(context, R.string.app_name, R.string.msg_session_expire,
+                R.string.ok, Runnable {
+            TYMIApp.Companion.mFireBaseAuth?.signOut()
+            AppPreferences.clearData()
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    or Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+            (context as Activity).finish()
+        })
     }
 }

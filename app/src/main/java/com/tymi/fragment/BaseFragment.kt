@@ -8,17 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ScrollView
-import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.tymi.AppPreferences
+import com.tymi.R
 import com.tymi.TYMIApp
 import com.tymi.controllers.DataController
 import com.tymi.entity.DataModel
 import com.tymi.interfaces.ContextHolder
 import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ISaveDataCallback
+import com.tymi.utils.DialogUtils
 import com.tymi.widget.SpinnerWidget
 
 
@@ -78,7 +79,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
         TYMIApp.mDataBase?.child(child)?.
                 addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(error: DatabaseError?) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), error?.message!!)
                     }
 
                     override fun onDataChange(data: DataSnapshot) {
@@ -93,7 +94,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
             TYMIApp.mDataBase?.child(child)?.child(user.uid)?.
                     addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError?) {
-                            Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+                            DialogUtils.showAlertDialog(context, getString(R.string.app_name), error?.message!!)
                         }
 
                         override fun onDataChange(data: DataSnapshot) {
@@ -101,7 +102,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                         }
                     })
         } else
-            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
+            DialogUtils.showSessionExpireDialog(context)
     }
 
     fun saveArrayData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
@@ -112,10 +113,10 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
                     addOnFailureListener { e ->
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         } else
-            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
+            DialogUtils.showSessionExpireDialog(context)
     }
 
     fun updateDataUserLevel(child: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
@@ -126,10 +127,10 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
                     addOnFailureListener { e ->
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         } else
-            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
+            DialogUtils.showSessionExpireDialog(context)
     }
 
     fun updateData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
@@ -141,9 +142,9 @@ abstract class BaseFragment : Fragment(), ContextHolder {
                         iSaveDataCallback.onSaveDataCallback(user)
                     }?.
                     addOnFailureListener { e ->
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         } else
-            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
+            DialogUtils.showSessionExpireDialog(context)
     }
 }

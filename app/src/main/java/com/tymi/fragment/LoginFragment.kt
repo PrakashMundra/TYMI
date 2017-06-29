@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.tymi.AppPreferences
@@ -20,6 +19,7 @@ import com.tymi.entity.Profile
 import com.tymi.entity.UserProfile
 import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ILoginActivity
+import com.tymi.utils.DialogUtils
 import com.tymi.utils.DrawableUtils
 import com.tymi.utils.GenericTextWatcher
 import com.tymi.utils.JSonUtils
@@ -125,7 +125,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
                     addOnFailureListener { e ->
                         et_email?.isSelected = true
                         et_password?.isSelected = true
-                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
                     }
         }
     }
@@ -148,7 +148,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
 
     private fun doForgotPassword() {
         val email = et_email?.text
-        if (email?.trim().isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        if (!email?.trim().isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches())
             iLoginActivity?.showForgotPassword(et_email?.text.toString())
         else
             iLoginActivity?.showForgotPassword("")
