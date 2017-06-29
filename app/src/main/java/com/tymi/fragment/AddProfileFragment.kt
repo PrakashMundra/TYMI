@@ -19,12 +19,14 @@ import kotlinx.android.synthetic.main.fragment_add_profile.*
 
 class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatcher.TextWatcherHandler {
     private var mPosition = Constants.DEFAULT_POSITION
+    private var isEdit: Boolean = false
 
     companion object {
-        fun newInstance(position: Int): AddProfileFragment {
+        fun newInstance(position: Int, isEdit: Boolean): AddProfileFragment {
             val fragment = AddProfileFragment()
             val bundle = Bundle()
             bundle.putInt(Constants.Extras.POSITION, position)
+            bundle.putBoolean(Constants.Extras.EDIT, isEdit)
             fragment.arguments = bundle
             return fragment
         }
@@ -68,7 +70,13 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
     private fun setProfileData() {
         if (arguments != null) {
             mPosition = arguments.getInt(Constants.Extras.POSITION)
-            if (mPosition != Constants.DEFAULT_POSITION) {
+            isEdit = arguments.getBoolean(Constants.Extras.EDIT, false)
+            if (isEdit) {
+                val profile = getDataModel().profile
+                et_full_name?.text = SpannableStringBuilder(profile?.fullName)
+                role?.setSelectedValue(profile?.role as LookUp)
+                et_dob?.setValue(profile?.dateOfBirth as String)
+            } else if (mPosition != Constants.DEFAULT_POSITION) {
                 val profile = getDataModel().childProfiles[mPosition]
                 et_full_name?.text = SpannableStringBuilder(profile.fullName)
                 role?.setSelectedValue(profile.role)
@@ -100,10 +108,23 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
 
     private fun submitProfile() {
         if (validations()) {
-            if (mPosition != Constants.DEFAULT_POSITION) {
+            if (isEdit) {
+                val profile = getDataModel().profile
+                if (profile != null) {
+                    val id = profile.id
+                    val updatedProfile = getProfile(id, profile.email)
+                    updateDataUserLevel(Constants.DataBase.USER_PROFILE, updatedProfile, object : ISaveDataCallback {
+                        override fun onSaveDataCallback(user: FirebaseUser?) {
+                            getDataModel().profile = updatedProfile
+                            activity.setResult(Activity.RESULT_OK)
+                            activity.finish()
+                        }
+                    })
+                }
+            } else if (mPosition != Constants.DEFAULT_POSITION) {
                 val profile = getDataModel().childProfiles[mPosition]
                 val id = profile.id
-                val updatedProfile = getProfile(id)
+                val updatedProfile = getProfile(id, "")
                 updateData(Constants.DataBase.CHILD_PROFILES, id, updatedProfile, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().childProfiles[mPosition] = updatedProfile
@@ -113,7 +134,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                 })
             } else {
                 val key = TYMIApp.mDataBase?.child(Constants.DataBase.CHILD_PROFILES)?.push()?.key
-                val profile = getProfile(key!!)
+                val profile = getProfile(key!!, "")
                 saveArrayData(Constants.DataBase.CHILD_PROFILES, key, profile, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().childProfiles.add(profile)
@@ -125,10 +146,10 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
         }
     }
 
-    private fun getProfile(id: String): Profile {
+    private fun getProfile(id: String, email: String): Profile {
         return Profile(id,
                 et_full_name?.text.toString(),
-                "",
+                email,
                 role?.getSelectedItem() as LookUp,
                 et_dob?.getValue() as String)
     }

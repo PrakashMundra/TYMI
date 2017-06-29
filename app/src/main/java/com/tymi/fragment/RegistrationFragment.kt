@@ -2,7 +2,6 @@ package com.tymi.fragment
 
 import android.app.Activity
 import android.os.Bundle
-import android.text.SpannableStringBuilder
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
@@ -23,18 +22,6 @@ import kotlinx.android.synthetic.main.fragment_registration.*
 
 class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorActionListener,
         GenericTextWatcher.TextWatcherHandler {
-    private var isEdit: Boolean = false
-
-    companion object {
-        fun newInstance(isEdit: Boolean): RegistrationFragment {
-            val fragment = RegistrationFragment()
-            val bundle = Bundle()
-            bundle.putBoolean(Constants.Extras.EDIT, isEdit)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
     override fun getContainerLayoutId(): Int {
         return R.layout.fragment_registration
     }
@@ -66,30 +53,10 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
                         roles.add(child.getValue(LookUp::class.java))
                     }
                     role?.setAdapterWithDefault(roles)
-                    setProfile()
                 }
             })
-        } else {
+        } else
             role?.setAdapterWithDefault(roles)
-            setProfile()
-        }
-    }
-
-    private fun setProfile() {
-        if (arguments != null) {
-            isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
-            if (isEdit) {
-                val profile = getDataModel().profile
-                if (profile != null) {
-                    et_full_name?.text = SpannableStringBuilder(profile.fullName)
-                    et_email?.text = SpannableStringBuilder(profile.email)
-                    role?.setSelectedValue(profile.role)
-                    et_dob?.setValue(profile.dateOfBirth)
-                    et_password?.text = SpannableStringBuilder("")
-                    et_confirm_password.text = SpannableStringBuilder("")
-                }
-            }
-        }
     }
 
     override fun onClick(view: View?) {
@@ -126,18 +93,6 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
 
     private fun doRegister() {
         if (validations()) {
-//            var id = 1
-//            if (isEdit) {
-//                val profile = getDataModel().profile
-//                if (profile != null)
-//                    id = profile.id
-//            }
-//            val profile = Profile(id,
-//                    et_full_name?.text.toString(),
-//                    et_email?.text.toString(),
-//                    role?.getSelectedItem() as LookUp,
-//                    et_dob.getValue())
-//            getDataModel().profile = profile
             val email = et_email?.text.toString()
             val password = et_password?.text.toString()
             val userProfile = UserProfile(et_full_name?.text.toString(),

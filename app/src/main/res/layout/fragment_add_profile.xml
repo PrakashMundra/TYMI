@@ -33,6 +33,11 @@
         app:DateViewWidget_key="@string/dob"
         app:DateViewWidget_max_today="true" />
 
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         style="@style/MatchWidth"
         android:divider="@drawable/divider_horizontal"

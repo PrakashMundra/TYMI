@@ -1,13 +1,16 @@
 package com.tymi.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.tymi.Constants
 import com.tymi.R
 import com.tymi.fragment.LoginFragment
 import com.tymi.interfaces.ILoginActivity
 
 class LoginActivity : BaseActivity(), ILoginActivity {
     private val TAG = LoginActivity::class.java.simpleName
+    private var mLoginFragment: LoginFragment? = null
 
     override fun getContainerLayoutId(): Int {
         return R.layout.activity_login
@@ -15,8 +18,9 @@ class LoginActivity : BaseActivity(), ILoginActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mLoginFragment = LoginFragment()
         supportFragmentManager.beginTransaction()
-                .replace(R.id.container_login, LoginFragment(), TAG)
+                .replace(R.id.container_login, mLoginFragment, TAG)
                 .commit()
     }
 
@@ -32,6 +36,12 @@ class LoginActivity : BaseActivity(), ILoginActivity {
 
     override fun showRegistration() {
         val registrationIntent = Intent(this, RegistrationActivity::class.java)
-        startActivity(registrationIntent)
+        startActivityForResult(registrationIntent, Constants.RequestCodes.REGISTRATION)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.RequestCodes.REGISTRATION)
+            mLoginFragment?.clearFields()
     }
 }

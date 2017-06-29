@@ -118,6 +118,20 @@ abstract class BaseFragment : Fragment(), ContextHolder {
             Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
     }
 
+    fun updateDataUserLevel(child: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
+        val user = TYMIApp.mFireBaseAuth?.currentUser
+        if (user != null) {
+            TYMIApp.mDataBase?.child(child)?.child(user.uid)?.setValue(T)?.
+                    addOnSuccessListener {
+                        iSaveDataCallback.onSaveDataCallback(user)
+                    }?.
+                    addOnFailureListener { e ->
+                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    }
+        } else
+            Toast.makeText(context, "Session has been Expired", Toast.LENGTH_SHORT).show()
+    }
+
     fun updateData(child: String, key: String, T: Any, iSaveDataCallback: ISaveDataCallback) {
         val user = TYMIApp.mFireBaseAuth?.currentUser
         if (user != null) {

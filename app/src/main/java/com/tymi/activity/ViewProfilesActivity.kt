@@ -32,13 +32,15 @@ class ViewProfilesActivity : BaseNavigationActivity(), IViewProfileActivity {
     override fun onProfileSelection(profileType: Int, position: Int) {
         when (profileType) {
             Constants.RequestCodes.PROFILE -> {
-                val intent = Intent(this, RegistrationActivity::class.java)
+                val intent = Intent(this, AddProfileActivity::class.java)
+                intent.putExtra(Constants.Extras.POSITION, Constants.DEFAULT_POSITION)
                 intent.putExtra(Constants.Extras.EDIT, true)
                 startActivityForResult(intent, Constants.RequestCodes.PROFILE)
             }
             Constants.RequestCodes.CHILD_PROFILE -> {
                 val intent = Intent(this, AddProfileActivity::class.java)
                 intent.putExtra(Constants.Extras.POSITION, position)
+                intent.putExtra(Constants.Extras.EDIT, false)
                 startActivityForResult(intent, Constants.RequestCodes.CHILD_PROFILE)
             }
         }

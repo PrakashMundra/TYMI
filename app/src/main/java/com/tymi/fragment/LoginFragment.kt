@@ -2,6 +2,7 @@ package com.tymi.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
@@ -59,6 +60,13 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
         btn_login.setOnClickListener(this)
         btn_forgot_password.setOnClickListener(this)
         btn_register.setOnClickListener(this)
+    }
+
+    fun clearFields() {
+        et_email?.text = SpannableStringBuilder("")
+        et_password?.text = SpannableStringBuilder("")
+        et_email?.isSelected = false
+        et_password?.isSelected = false
     }
 
     override fun onClick(view: View?) {

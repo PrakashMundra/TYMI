@@ -14,9 +14,10 @@ object Constants {
     }
 
     object RequestCodes {
-        val PROFILE = 0x100
-        val CHILD_PROFILE = 0x101
-        val INCIDENT = 0x102
+        val REGISTRATION = 0x100
+        val PROFILE = 0x101
+        val CHILD_PROFILE = 0x102
+        val INCIDENT = 0x103
     }
 
     object DataBase {

@@ -22,7 +22,8 @@ class AddProfileActivity : BaseNavigationActivity() {
         if (intent != null && intent.extras != null) {
             setNavigationBack()
             val position = intent.extras.get(Constants.Extras.POSITION) as Int
-            addProfileFragment = AddProfileFragment.newInstance(position)
+            val isEdit = intent.extras.getBoolean(Constants.Extras.EDIT)
+            addProfileFragment = AddProfileFragment.newInstance(position, isEdit)
         } else {
             setNavigationMenu()
             addProfileFragment = AddProfileFragment()
