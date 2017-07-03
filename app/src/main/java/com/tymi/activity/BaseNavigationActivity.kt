@@ -12,6 +12,7 @@ import android.view.View
 import com.tymi.AppPreferences
 import com.tymi.R
 import com.tymi.TYMIApp
+import com.tymi.utils.AlarmUtils
 import com.tymi.utils.DialogUtils
 import com.tymi.utils.DrawableUtils
 import kotlinx.android.synthetic.main.actvity_navigation_base.*
@@ -101,6 +102,7 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
     fun logout() {
         TYMIApp.mFireBaseAuth?.signOut()
         AppPreferences.getInstance(this).clearData()
+        AlarmUtils.stopAlarm(this)
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 or Intent.FLAG_ACTIVITY_NEW_TASK)

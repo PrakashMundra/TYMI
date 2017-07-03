@@ -7,6 +7,7 @@ object Constants {
     val HOME_SPANS = 2
     val STATUS_OPEN = "1"
     val STATUS_CLOSE = "2"
+    val ADS_INTERVAL = 3000000L
 
     object Extras {
         val POSITION = "POSITION"

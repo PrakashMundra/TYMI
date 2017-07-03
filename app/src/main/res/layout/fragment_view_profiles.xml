@@ -2,120 +2,129 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Match"
-    android:orientation="vertical"
-    android:padding="@dimen/margin">
-
-    <RelativeLayout
-        style="@style/MatchWidth"
-        android:background="@drawable/bg_title">
-
-        <TextView
-            android:id="@+id/my_profile"
-            style="@style/Header.Title"
-            android:layout_centerVertical="true"
-            android:text="@string/my_profile" />
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/my_profile_edit"
-            style="@style/Wrap"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margin"
-            app:srcCompat="@drawable/ic_edit" />
-    </RelativeLayout>
+    android:orientation="vertical">
 
     <LinearLayout
-        style="@style/MatchWidth"
-        android:divider="@drawable/divider_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:showDividers="middle">
+        android:padding="@dimen/margin">
+
+        <RelativeLayout
+            style="@style/MatchWidth"
+            android:background="@drawable/bg_title">
+
+            <TextView
+                android:id="@+id/my_profile"
+                style="@style/Header.Title"
+                android:layout_centerVertical="true"
+                android:text="@string/my_profile" />
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/my_profile_edit"
+                style="@style/Wrap"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/margin"
+                app:srcCompat="@drawable/ic_edit" />
+        </RelativeLayout>
 
         <LinearLayout
             style="@style/MatchWidth"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-            <TextView
-                style="@style/Wrap"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:text="@string/full_name" />
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <TextView
-                android:id="@+id/my_full_name"
-                style="@style/ValueTextView"
-                android:layout_width="0dp"
-                android:layout_weight="0.7"
-                android:text="@string/full_name" />
+                <TextView
+                    style="@style/Wrap"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:text="@string/full_name" />
+
+                <TextView
+                    android:id="@+id/my_full_name"
+                    style="@style/ValueTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:text="@string/full_name" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/my_email"
+                    style="@style/ValueTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:text="@string/email" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:text="@string/role" />
+
+                <TextView
+                    android:id="@+id/my_role"
+                    style="@style/ValueTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:text="@string/role" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:text="@string/dob" />
+
+                <TextView
+                    android:id="@+id/my_dob"
+                    style="@style/ValueTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:text="@string/dob" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            style="@style/MatchWidth"
-            android:orientation="horizontal"
-            android:weightSum="1">
+        <TextView
+            style="@style/Header.Title"
+            android:layout_marginTop="@dimen/margin"
+            android:background="@drawable/bg_title"
+            android:text="@string/child_profiles" />
 
-            <TextView
-                style="@style/Wrap"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:text="@string/email" />
-
-            <TextView
-                android:id="@+id/my_email"
-                style="@style/ValueTextView"
-                android:layout_width="0dp"
-                android:layout_weight="0.7"
-                android:text="@string/email" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/MatchWidth"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <TextView
-                style="@style/Wrap"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:text="@string/role" />
-
-            <TextView
-                android:id="@+id/my_role"
-                style="@style/ValueTextView"
-                android:layout_width="0dp"
-                android:layout_weight="0.7"
-                android:text="@string/role" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/MatchWidth"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <TextView
-                style="@style/Wrap"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
-                android:text="@string/dob" />
-
-            <TextView
-                android:id="@+id/my_dob"
-                style="@style/ValueTextView"
-                android:layout_width="0dp"
-                android:layout_weight="0.7"
-                android:text="@string/dob" />
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/child_profiles_recyclerView"
+            style="@style/Match"
+            android:overScrollMode="never" />
     </LinearLayout>
 
-    <TextView
-        style="@style/Header.Title"
-        android:layout_marginTop="@dimen/margin"
-        android:background="@drawable/bg_title"
-        android:text="@string/child_profiles" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/child_profiles_recyclerView"
-        style="@style/Match"
-        android:overScrollMode="never" />
+    <com.tymi.widget.BannerAdWidget style="@style/MatchWidth" />
 </LinearLayout>

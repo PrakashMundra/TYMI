@@ -16,6 +16,10 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/incidents_viewpager"
-        style="@style/Match"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:overScrollMode="never" />
+
+    <com.tymi.widget.BannerAdWidget style="@style/MatchWidth" />
 </LinearLayout>

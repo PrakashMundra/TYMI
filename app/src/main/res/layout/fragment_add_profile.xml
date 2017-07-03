@@ -2,46 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Match"
-    android:divider="@drawable/divider_vertical"
-    android:orientation="vertical"
-    android:padding="@dimen/margin"
-    android:showDividers="middle">
+    android:orientation="vertical">
 
-    <LinearLayout
-        style="@style/MatchWidth"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/Wrap"
-            android:text="@string/full_name" />
-
-        <EditText
-            android:id="@+id/et_full_name"
-            style="@style/MatchWidth"
-            android:imeOptions="actionNext"
-            android:inputType="textPersonName" />
-    </LinearLayout>
-
-    <com.tymi.widget.SpinnerWidget
-        android:id="@+id/role"
-        style="@style/MatchWidth"
-        app:SpinnerWidget_key="@string/role" />
-
-    <com.tymi.widget.DateViewWidget
-        android:id="@+id/et_dob"
-        style="@style/MatchWidth"
-        app:DateViewWidget_key="@string/dob"
-        app:DateViewWidget_max_today="true" />
-
-    <android.support.v4.widget.Space
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:divider="@drawable/divider_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/margin"
+            android:showDividers="middle">
+
+            <LinearLayout
+                style="@style/MatchWidth"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/full_name" />
+
+                <EditText
+                    android:id="@+id/et_full_name"
+                    style="@style/MatchWidth"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <com.tymi.widget.SpinnerWidget
+                android:id="@+id/role"
+                style="@style/MatchWidth"
+                app:SpinnerWidget_key="@string/role" />
+
+            <com.tymi.widget.DateViewWidget
+                android:id="@+id/et_dob"
+                style="@style/MatchWidth"
+                app:DateViewWidget_key="@string/dob"
+                app:DateViewWidget_max_today="true" />
+        </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         style="@style/MatchWidth"
         android:divider="@drawable/divider_horizontal"
         android:orientation="horizontal"
+        android:padding="@dimen/margin"
         android:showDividers="middle">
 
         <Button
@@ -58,4 +68,6 @@
             android:layout_weight="1"
             android:text="@string/submit" />
     </LinearLayout>
+
+    <com.tymi.widget.BannerAdWidget style="@style/MatchWidth" />
 </LinearLayout>

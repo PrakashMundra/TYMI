@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.tymi.R
 import com.tymi.fragment.DashBoardFragment
 import com.tymi.interfaces.IDashBoardActivity
+import com.tymi.utils.AlarmUtils
 
 class DashBoardActivity : BaseNavigationActivity(), IDashBoardActivity {
     private val TAG = DashBoardActivity::class.java.simpleName
@@ -22,6 +23,7 @@ class DashBoardActivity : BaseNavigationActivity(), IDashBoardActivity {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container_home, DashBoardFragment(), TAG)
                 .commit()
+        AlarmUtils.startAlarm(this)
     }
 
     override fun showDashBordItem(id: Int?) {
