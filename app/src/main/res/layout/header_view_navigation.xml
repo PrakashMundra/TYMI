@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchWidth"
+    android:layout_height="@dimen/navDrawer_header_height"
+    android:orientation="vertical">
+
+    <ImageView
+        style="@style/Match"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_navigation" />
+
+    <View
+        style="@style/Match"
+        android:background="#80000000" />
+
+    <LinearLayout
+        style="@style/Match"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/nav_header_name"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/nav_header_email"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</RelativeLayout>

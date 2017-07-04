@@ -11,6 +11,8 @@
     <string name="submit">Submit</string>
     <string name="select">Select</string>
     <string name="loading">Loading&#8230;</string>
+    <string name="location">Location</string>
+    <string name="no_data">No data available</string>
 
     <!--Login-->
     <!--<string name=""></string>-->
@@ -68,8 +70,16 @@
     <string name="view_incident">View Incident</string>
     <string name="edit_incident">Edit Incident</string>
 
+    <!--Navigation Header-->
+    <string name="welcome">Welcome!</string>
+
     <!--messages-->
+    <string name="msg_registration">Congratulations, You have been registered successfully.
+        \nPlease Login into the application.</string>
     <string name="msg_forgot_password">We have a sent mail with Instructions to reset your Password.</string>
     <string name="msg_logout">Are you sure want to Logout?</string>
     <string name="msg_session_expire">Session has been Expired, Please re-login into the application.</string>
+    <string name="msg_location_settings">Please turn on Google Location Service in your device settings.</string>
+    <string name="msg_location">Location is not found, please restart and Allow required permissions.</string>
+    <string name="msg_device_id">Device unique is not found, please restart and Allow required permissions.</string>
 </resources>

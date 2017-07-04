@@ -283,12 +283,12 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
             isValid = false
         }
 
-        val notesStr = notes?.text.toString()
+        /*val notesStr = notes?.text.toString()
         if (notesStr.trim().isNullOrEmpty()) {
             notes?.isSelected = true
             setErrorView(notes?.parent as View)
             isValid = false
-        }
+        }*/
 
         if (selectedStatus.id == Constants.STATUS_CLOSE) {
             val endDate = end_date?.getValue() as String
@@ -305,12 +305,12 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
             }
         }
 
-        val expensesStr = expenses?.text.toString()
+        /*val expensesStr = expenses?.text.toString()
         if (expensesStr.trim().isNullOrEmpty()) {
             expenses?.isSelected = true
             setErrorView(expenses?.parent as View)
             isValid = false
-        }
+        }*/
         return isValid
     }
 }

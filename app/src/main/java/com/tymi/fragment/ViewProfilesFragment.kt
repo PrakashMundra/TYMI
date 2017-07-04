@@ -16,6 +16,7 @@ import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.IViewProfileActivity
 import com.tymi.utils.DialogUtils
 import kotlinx.android.synthetic.main.fragment_view_profiles.*
+import kotlinx.android.synthetic.main.inc_no_data_view.*
 
 
 class ViewProfilesFragment : BaseFragment() {
@@ -63,6 +64,10 @@ class ViewProfilesFragment : BaseFragment() {
                 mChildProfilesAdapter?.setData(childProfiles)
                 child_profiles_recyclerView?.adapter = mChildProfilesAdapter
                 DialogUtils.hideProgressDialog()
+                if (childProfiles.size > 0)
+                    no_data?.visibility = View.GONE
+                else
+                    no_data?.visibility = View.VISIBLE
             }
         })
     }

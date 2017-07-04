@@ -8,6 +8,8 @@ object Constants {
     val STATUS_OPEN = "1"
     val STATUS_CLOSE = "2"
     val ADS_INTERVAL = 3000000L
+    val UPDATE_INTERVAL = (2.times(1000)).toLong()
+    val FASTEST_INTERVAL: Long = 2000
 
     object Extras {
         val POSITION = "POSITION"
@@ -21,6 +23,7 @@ object Constants {
         val PROFILE = 0x102
         val CHILD_PROFILE = 0x103
         val INCIDENT = 0x104
+        val PERMISSIONS = 0x105
     }
 
     object DataBase {

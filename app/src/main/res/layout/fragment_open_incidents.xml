@@ -33,8 +33,5 @@
         android:layout_height="@dimen/et_stroke"
         android:background="@color/colorPrimary" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@id/incidents_recyclerView"
-        style="@style/Match"
-        android:overScrollMode="never" />
+    <include layout="@layout/inc_incidents" />
 </LinearLayout>

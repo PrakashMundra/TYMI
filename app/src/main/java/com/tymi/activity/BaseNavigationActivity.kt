@@ -6,16 +6,19 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import com.tymi.AppPreferences
 import com.tymi.R
 import com.tymi.TYMIApp
+import com.tymi.controllers.DataController
 import com.tymi.utils.AlarmUtils
 import com.tymi.utils.DialogUtils
 import com.tymi.utils.DrawableUtils
 import kotlinx.android.synthetic.main.actvity_navigation_base.*
+import kotlinx.android.synthetic.main.header_view_navigation.view.*
 
 
 abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -24,7 +27,6 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.actvity_navigation_base)
-        initViews()
         if (getContainerLayoutId() != 0) {
             try {
                 activity_container?.addView(View.inflate(this, getContainerLayoutId(), null))
@@ -34,12 +36,8 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
         }
     }
 
-    private fun initViews() {
-        navigationView?.menu?.findItem(TYMIApp.menuId)?.isChecked = true
-        navigationView?.setNavigationItemSelectedListener(this)
-    }
-
     protected fun setNavigationMenu() {
+        initNavigationViews()
         if (getToolBarTitle() != 0)
             toolbar.title = getString(getToolBarTitle())
         setSupportActionBar(toolbar)
@@ -54,6 +52,24 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
         }
         drawer_layout?.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
+    }
+
+    private fun initNavigationViews() {
+        navigationView?.menu?.findItem(TYMIApp.menuId)?.isChecked = true
+        navigationView?.setNavigationItemSelectedListener(this)
+        setHeaderData()
+    }
+
+    private fun setHeaderData() {
+        val dataModel = DataController.getInstance().dataModel
+        if (dataModel != null) {
+            val userProfile = dataModel.profile
+            if (userProfile != null) {
+                val headerView = navigationView?.inflateHeaderView(R.layout.header_view_navigation) as View
+                headerView.nav_header_name?.text = SpannableStringBuilder(userProfile.fullName)
+                headerView.nav_header_email?.text = SpannableStringBuilder(userProfile.email)
+            }
+        }
     }
 
     protected fun setNavigationBack() {

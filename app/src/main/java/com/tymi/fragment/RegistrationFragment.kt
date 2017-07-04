@@ -1,13 +1,29 @@
 package com.tymi.fragment
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.telephony.TelephonyManager
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationListener
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.tymi.Constants
@@ -20,8 +36,16 @@ import com.tymi.utils.DialogUtils
 import com.tymi.utils.GenericTextWatcher
 import kotlinx.android.synthetic.main.fragment_registration.*
 
+
 class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorActionListener,
-        GenericTextWatcher.TextWatcherHandler {
+        GenericTextWatcher.TextWatcherHandler, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    private var mGoogleApiClient: GoogleApiClient? = null
+    private var mLocation: Location? = null
+    private var mLocationManager: LocationManager? = null
+    private var mLocationRequest: LocationRequest? = null
+    private var mDeviceId: String = ""
+
     override fun getContainerLayoutId(): Int {
         return R.layout.fragment_registration
     }
@@ -29,6 +53,19 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        initLocation()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mGoogleApiClient != null)
+            mGoogleApiClient?.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mGoogleApiClient != null && mGoogleApiClient?.isConnected!!)
+            mGoogleApiClient?.disconnect()
     }
 
     private fun initViews() {
@@ -59,6 +96,103 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             })
         } else
             role?.setAdapterWithDefault(roles)
+    }
+
+    private fun initLocation() {
+        mGoogleApiClient = GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
+        mLocationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        //check whether location service is enable or not in your  phone
+        checkLocation()
+    }
+
+    private fun checkLocation(): Boolean {
+        if (!isLocationEnabled())
+            showAlert()
+        return isLocationEnabled()
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        return mLocationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)!! ||
+                mLocationManager?.isProviderEnabled(LocationManager.NETWORK_PROVIDER)!!
+    }
+
+    private fun showAlert() {
+        DialogUtils.showAlertDialog(context, R.string.location, R.string.msg_location_settings, R.string.ok,
+                Runnable {
+                    val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(myIntent)
+                }, R.string.cancel, null)
+    }
+
+    override fun onConnected(bundle: Bundle?) {
+        checkPermissions()
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        mGoogleApiClient?.connect()
+    }
+
+    override fun onConnectionFailed(result: ConnectionResult) {
+
+    }
+
+    private fun checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE),
+                        Constants.RequestCodes.PERMISSIONS)
+            } else
+                startLocationUpdates()
+        } else
+            startLocationUpdates()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            Constants.RequestCodes.PERMISSIONS -> {
+                startLocationUpdates()
+                val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    mDeviceId = tm.imei
+                else {
+                    @Suppress("DEPRECATION")
+                    mDeviceId = tm.deviceId
+                }
+            }
+        }
+    }
+
+    private fun startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(Constants.UPDATE_INTERVAL)
+                .setFastestInterval(Constants.FASTEST_INTERVAL)
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
+    }
+
+    override fun onLocationChanged(location: Location?) {
+        if (location != null) {
+            mLocation = location
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this)
+        } else
+            DialogUtils.showAlertDialog(context, R.string.msg_location)
     }
 
     override fun onClick(view: View?) {
@@ -99,16 +233,21 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             val email = et_email?.text.toString()
             val password = et_password?.text.toString()
             val userProfile = UserProfile(et_full_name?.text.toString(),
-                    role?.getSelectedItem() as LookUp,
-                    et_dob.getValue())
+                    role?.getSelectedItem() as LookUp, et_dob.getValue(),
+                    mLocation?.latitude.toString(), mLocation?.longitude.toString()
+                    , mDeviceId)
             TYMIApp.mFireBaseAuth?.createUserWithEmailAndPassword(email, password)?.
                     addOnSuccessListener {
                         val user = TYMIApp.mFireBaseAuth?.currentUser
                         TYMIApp.mDataBase?.child(Constants.DataBase.USER_PROFILE)?.child(user?.uid)?.setValue(userProfile)?.
                                 addOnSuccessListener {
                                     DialogUtils.hideProgressDialog()
-                                    activity.setResult(Activity.RESULT_OK)
-                                    activity.finish()
+                                    DialogUtils.showAlertDialog(context, R.string.registration,
+                                            R.string.msg_registration, R.string.ok,
+                                            Runnable {
+                                                activity.setResult(Activity.RESULT_OK)
+                                                activity.finish()
+                                            })
                                 }?.
                                 addOnFailureListener { e ->
                                     DialogUtils.hideProgressDialog()
@@ -174,6 +313,16 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
         if (!password.contentEquals(confirmPassword)) {
             et_confirm_password?.isSelected = true
             setErrorView(et_confirm_password?.parent as View)
+            isValid = false
+        }
+
+        if (mLocation == null) {
+            DialogUtils.showAlertDialog(context, R.string.msg_location)
+            isValid = false
+        }
+
+        if (mDeviceId.isNullOrEmpty()) {
+            DialogUtils.showAlertDialog(context, R.string.msg_device_id)
             isValid = false
         }
         return isValid

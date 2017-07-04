@@ -8,7 +8,9 @@ import android.view.View
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.adapter.IncidentsAdapter
-import kotlinx.android.synthetic.main.fragment_closed_incidents.*
+import com.tymi.entity.Incident
+import kotlinx.android.synthetic.main.inc_incidents.*
+import kotlinx.android.synthetic.main.inc_no_data_view.*
 
 class ClosedIncidentsFragment : BaseFragment() {
     override fun getContainerLayoutId(): Int {
@@ -27,14 +29,24 @@ class ClosedIncidentsFragment : BaseFragment() {
         val itemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
         itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_child_profile))
         incidents_recyclerView?.addItemDecoration(itemDecoration)
-        incidents_recyclerView?.adapter = IncidentsAdapter(context,
-                getDataModel().getFilteredIncidents(Constants.STATUS_CLOSE))
+        val incidents = getDataModel().getFilteredIncidents(Constants.STATUS_CLOSE)
+        incidents_recyclerView?.adapter = IncidentsAdapter(context, incidents)
+        showNoData(incidents)
     }
 
     fun updateData() {
         if (incidents_recyclerView != null && incidents_recyclerView?.adapter != null) {
             val adapter = incidents_recyclerView?.adapter as IncidentsAdapter
-            adapter.updateData(getDataModel().getFilteredIncidents(Constants.STATUS_CLOSE))
+            val incidents = getDataModel().getFilteredIncidents(Constants.STATUS_CLOSE)
+            adapter.updateData(incidents)
+            showNoData(incidents)
         }
+    }
+
+    private fun showNoData(list: ArrayList<Incident>) {
+        if (list.size > 0)
+            no_data?.visibility = View.GONE
+        else
+            no_data?.visibility = View.VISIBLE
     }
 }

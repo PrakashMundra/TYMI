@@ -70,7 +70,7 @@ object DialogUtils {
     }
 
     fun showAlertDialog(context: Context, title: Int, message: Int, positive: Int,
-                        positiveRunnable: Runnable?, negative: Int, negativeRunnable: Runnable) {
+                        positiveRunnable: Runnable?, negative: Int, negativeRunnable: Runnable?) {
         showAlertDialog(context, context.getString(title), context.getString(message),
                 context.getString(positive), positiveRunnable, null, null, context.getString(negative), negativeRunnable)
     }

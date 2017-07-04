@@ -120,10 +120,19 @@
             android:background="@drawable/bg_title"
             android:text="@string/child_profiles" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/child_profiles_recyclerView"
-            style="@style/Match"
-            android:overScrollMode="never" />
+        <RelativeLayout style="@style/Match">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/child_profiles_recyclerView"
+                style="@style/Match"
+                android:overScrollMode="never" />
+
+            <include
+                layout="@layout/inc_no_data_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
     </LinearLayout>
 
     <com.tymi.widget.BannerAdWidget style="@style/MatchWidth" />
