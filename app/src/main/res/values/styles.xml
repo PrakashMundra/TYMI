@@ -109,4 +109,17 @@
         <item name="android:textSize">@dimen/dashboard_title</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="AboutUs.Title" parent="Base.TextAppearance.AppCompat.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@drawable/bg_title</item>
+    </style>
+
+    <style name="AboutUs.Text" parent="Base.TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
 </resources>

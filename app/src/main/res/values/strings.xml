@@ -13,6 +13,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="location">Location</string>
     <string name="no_data">No data available</string>
+    <string name="no_internet">No Internet connection.</string>
 
     <!--Login-->
     <!--<string name=""></string>-->
@@ -72,6 +73,24 @@
 
     <!--Navigation Header-->
     <string name="welcome">Welcome!</string>
+
+    <!--About us-->
+    <string name="about_us">About Us</string>
+    <string name="what_is_tymi">What is TYMI?</string>
+    <string name="what_is_tymi_answer">TYMI, a Simple and Unique mobile application that helps you to
+        record and monitor all your family Medical incidents.\n\n<b><i>TYMI - Track Your Medical Incidents</i></b></string>
+    <string name="how_tymi_works">How TYMI works?</string>
+    <string name="how_tymi_works_answer">Follow the simple application Instructions and Record all your Medical incidents
+        and TYMI will keep them for you to assess later.</string>
+    <string name="why_tymi">Why TYMI?</string>
+    <string name="why_tymi_answer">TYMI is the perfect replacement for undependable paper records that hold bits and
+        pieces of your Medical incidents. TYMI is the way to keep the information that is important to you in
+        one single repository.</string>
+
+    <!--Contact us-->
+    <string name="contact_us">Contact Us</string>
+    <string name="contact_us_text">We welcome and encourage your input.\nPlease send comments and
+        suggestions to us at <b></b>.\n\n\nThanks for using TYMI</string>
 
     <!--messages-->
     <string name="msg_registration">Congratulations, You have been registered successfully.

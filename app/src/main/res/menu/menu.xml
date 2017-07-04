@@ -26,6 +26,16 @@
             android:id="@id/view_incidents"
             android:icon="@drawable/ic_view_incidents"
             android:title="@string/view_incidents" />
+
+        <item
+            android:id="@id/about_us"
+            android:icon="@drawable/ic_about_us"
+            android:title="@string/about_us" />
+
+        <item
+            android:id="@id/contact_us"
+            android:icon="@drawable/ic_contact_us"
+            android:title="@string/contact_us" />
     </group>
 
     <item

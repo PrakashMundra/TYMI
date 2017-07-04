@@ -65,6 +65,14 @@
             android:name="com.tymi.activity.ViewIncidentsActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.tymi.activity.AboutUsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.tymi.activity.ContactUsActivity"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name="com.tymi.receivers.AlarmReceiver"
             android:enabled="true">

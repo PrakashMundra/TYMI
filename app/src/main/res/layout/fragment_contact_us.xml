@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Match"
+    android:divider="@drawable/divider_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/margin"
+    android:showDividers="middle">
+
+    <TextView
+        style="@style/AboutUs.Text"
+        android:text="@string/contact_us_text" />
+</LinearLayout>

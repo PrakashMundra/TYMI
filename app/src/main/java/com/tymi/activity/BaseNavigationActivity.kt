@@ -3,6 +3,7 @@ package com.tymi.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -17,6 +18,7 @@ import com.tymi.controllers.DataController
 import com.tymi.utils.AlarmUtils
 import com.tymi.utils.DialogUtils
 import com.tymi.utils.DrawableUtils
+import com.tymi.utils.NetworkUtils
 import kotlinx.android.synthetic.main.actvity_navigation_base.*
 import kotlinx.android.synthetic.main.header_view_navigation.view.*
 
@@ -55,9 +57,13 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
     }
 
     private fun initNavigationViews() {
-        navigationView?.menu?.findItem(TYMIApp.menuId)?.isChecked = true
+        updateNavigationSelection()
         navigationView?.setNavigationItemSelectedListener(this)
         setHeaderData()
+    }
+
+    protected fun updateNavigationSelection() {
+        navigationView?.menu?.findItem(TYMIApp.menuId)?.isChecked = true
     }
 
     private fun setHeaderData() {
@@ -90,23 +96,33 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
     }
 
     fun onMenuItemSelected(itemId: Int?) {
-        val id = itemId as Int
-        if (id != R.id.logout)
-            TYMIApp.menuId = id
         when (itemId) {
-            R.id.dashboard -> openActivity(this, DashBoardActivity::class.java)
-            R.id.add_profile -> openActivity(this, AddProfileActivity::class.java)
-            R.id.view_profiles -> openActivity(this, ViewProfilesActivity::class.java)
-            R.id.add_incident -> openActivity(this, AddIncidentActivity::class.java)
-            R.id.view_incidents -> openActivity(this, ViewIncidentsActivity::class.java)
-            R.id.logout -> DialogUtils.showAlertDialog(this, R.string.logout, R.string.msg_logout,
-                    R.string.yes, Runnable { logout() }, R.string.no)
+            R.id.dashboard -> openActivity(itemId, this, DashBoardActivity::class.java)
+            R.id.add_profile -> checkNetworkAndOpenActivity(itemId, this, AddProfileActivity::class.java)
+            R.id.view_profiles -> checkNetworkAndOpenActivity(itemId, this, ViewProfilesActivity::class.java)
+            R.id.add_incident -> checkNetworkAndOpenActivity(itemId, this, AddIncidentActivity::class.java)
+            R.id.view_incidents -> checkNetworkAndOpenActivity(itemId, this, ViewIncidentsActivity::class.java)
+            R.id.about_us -> openActivity(itemId, this, AboutUsActivity::class.java)
+            R.id.contact_us -> openActivity(itemId, this, ContactUsActivity::class.java)
+            R.id.logout -> {
+                if (NetworkUtils.isNetworkAvailable(this))
+                    DialogUtils.showAlertDialog(this, R.string.logout, R.string.msg_logout,
+                            R.string.yes, Runnable { logout() }, R.string.no)
+            }
         }
         drawer_layout?.closeDrawers()
     }
 
-    fun openActivity(source: Activity, destination: Class<out Activity>) {
+    fun checkNetworkAndOpenActivity(itemId: Int?, source: Activity, destination: Class<out Activity>) {
+        if (NetworkUtils.isNetworkAvailable(this))
+            openActivity(itemId, source, destination)
+        else
+            Handler().postDelayed({ updateNavigationSelection() }, 1000)
+    }
+
+    fun openActivity(itemId: Int?, source: Activity, destination: Class<out Activity>) {
         if (source.javaClass != destination) {
+            TYMIApp.menuId = itemId as Int
             val intent = Intent(source, destination)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             source.startActivity(intent)
@@ -124,5 +140,12 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
                 or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
+    }
+
+    override fun onBackPressed() {
+        if (drawer_layout?.isDrawerOpen(navigationView)!!)
+            drawer_layout?.closeDrawers()
+        else
+            super.onBackPressed()
     }
 }

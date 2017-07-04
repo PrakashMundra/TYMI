@@ -2,6 +2,7 @@ package com.tymi.activity
 
 import android.os.Bundle
 import com.tymi.R
+import com.tymi.TYMIApp
 import com.tymi.fragment.DashBoardFragment
 import com.tymi.interfaces.IDashBoardActivity
 import com.tymi.utils.AlarmUtils
@@ -24,6 +25,14 @@ class DashBoardActivity : BaseNavigationActivity(), IDashBoardActivity {
                 .replace(R.id.container_home, DashBoardFragment(), TAG)
                 .commit()
         AlarmUtils.startAlarm(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (TYMIApp.menuId != R.id.dashboard) {
+            TYMIApp.menuId = R.id.dashboard
+            updateNavigationSelection()
+        }
     }
 
     override fun showDashBordItem(id: Int?) {
