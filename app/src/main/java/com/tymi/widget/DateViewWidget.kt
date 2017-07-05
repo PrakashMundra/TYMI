@@ -27,10 +27,10 @@ class DateViewWidget : BaseWidget, View.OnClickListener {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        val calender = Calendar.getInstance()
-        mYear = calender.get(Calendar.YEAR)
-        mMonth = calender.get(Calendar.MONTH)
-        mDay = calender.get(Calendar.DAY_OF_MONTH)
+        val calendar = Calendar.getInstance()
+        mYear = calendar.get(Calendar.YEAR)
+        mMonth = calendar.get(Calendar.MONTH)
+        mDay = calendar.get(Calendar.DAY_OF_MONTH)
     }
 
     override fun getLayoutId(): Int {
@@ -99,7 +99,16 @@ class DateViewWidget : BaseWidget, View.OnClickListener {
     }
 
     fun setValue(dateStr: String) {
-        widget_date_value?.text = SpannableStringBuilder(dateStr)
+        if (!dateStr.isNullOrEmpty()) {
+            widget_date_value?.text = SpannableStringBuilder(dateStr)
+            val dateFormat = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
+            val date = dateFormat.parse(dateStr)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            mYear = calendar.get(Calendar.YEAR)
+            mMonth = calendar.get(Calendar.MONTH)
+            mDay = calendar.get(Calendar.DAY_OF_MONTH)
+        }
     }
 
     fun getValue(): String {

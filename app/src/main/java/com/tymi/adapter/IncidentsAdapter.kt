@@ -9,6 +9,7 @@ import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.Incident
 import com.tymi.interfaces.IViewIncidentsActivity
+import com.tymi.utils.NumberUtils
 import kotlinx.android.synthetic.main.list_item_incident.view.*
 
 class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>) :
@@ -45,13 +46,17 @@ class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>
                 itemView.item_incident.text = incident.incident.title
                 if (incident.statusId.contentEquals(Constants.STATUS_OPEN)) {
                     itemView.item_start_date.text = incident.startDate
-                    itemView.item_start_date.visibility = View.VISIBLE
-                    itemView.item_end_date.visibility = View.GONE
+                    itemView.item_end_date_layout.visibility = View.GONE
                 } else {
-                    itemView.item_start_date.visibility = View.GONE
+                    itemView.item_start_date.text = incident.startDate
                     itemView.item_end_date.text = incident.endDate
-                    itemView.item_end_date.visibility = View.VISIBLE
+                    itemView.item_end_date_layout.visibility = View.VISIBLE
                 }
+                val expenses = incident.expenses;
+                if (expenses.isNullOrEmpty())
+                    itemView.item_expenses.text = "0"
+                else
+                    itemView.item_expenses.text = NumberUtils.getFormattedNumber(expenses)
                 itemView.item_edit.tag = position
                 itemView.item_edit.setOnClickListener { v ->
                     iViewIncidentsActivity?.onIncidentSelection(v.tag as Int, true)

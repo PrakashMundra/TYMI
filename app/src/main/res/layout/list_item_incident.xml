@@ -4,32 +4,93 @@
     style="@style/MatchWidth"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:minHeight="@dimen/et_min_ht"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/item_profile"
-        style="@style/IncidentItem"
-        android:text="@string/profile"
-        android:textColor="@color/textPrimary" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:layout_weight="1"
+        android:divider="@drawable/divider_vertical"
+        android:orientation="vertical"
+        android:showDividers="middle">
 
-    <TextView
-        android:id="@+id/item_incident"
-        style="@style/IncidentItem"
-        android:text="@string/incident"
-        android:textColor="@color/textPrimary" />
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item_start_date"
-        style="@style/IncidentItem"
-        android:text="@string/start_date"
-        android:textColor="@color/textPrimary" />
+            <TextView
+                style="@style/Wrap"
+                android:text="@string/profile" />
 
-    <TextView
-        android:id="@+id/item_end_date"
-        style="@style/IncidentItem"
-        android:text="@string/end_date"
-        android:textColor="@color/textPrimary" />
+            <TextView
+                android:id="@+id/item_profile"
+                style="@style/ValueTextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Wrap"
+                android:text="@string/incident" />
+
+            <TextView
+                android:id="@+id/item_incident"
+                style="@style/ValueTextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/start_date" />
+
+                <TextView
+                    android:id="@+id/item_start_date"
+                    style="@style/ValueTextView" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/item_end_date_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Wrap"
+                    android:text="@string/end_date" />
+
+                <TextView
+                    android:id="@+id/item_end_date"
+                    style="@style/ValueTextView" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MatchWidth"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Wrap"
+                android:text="@string/expenses" />
+
+            <TextView
+                android:id="@+id/item_expenses"
+                style="@style/ValueTextView" />
+        </LinearLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/item_edit"

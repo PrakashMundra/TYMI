@@ -74,30 +74,24 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener, TextView.On
         if (email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
             et_email?.isSelected = true
         else {
-            val user = TYMIApp.mFireBaseAuth?.currentUser
-            if (user != null) {
-                val handler = setNetworkHandler(false)
-                DialogUtils.showProgressDialog(context)
-                et_email?.isSelected = false
-                TYMIApp.mFireBaseAuth?.sendPasswordResetEmail(email)?.
-                        addOnSuccessListener {
-                            handler.removeCallbacks(mNetworkRunnable)
-                            DialogUtils.hideProgressDialog()
-                            DialogUtils.showAlertDialog(context, R.string.app_name, R.string.msg_forgot_password,
-                                    R.string.ok, Runnable {
-                                activity.setResult(Activity.RESULT_OK)
-                                activity.finish()
-                            })
-                        }?.
-                        addOnFailureListener { e ->
-                            handler.removeCallbacks(mNetworkRunnable)
-                            DialogUtils.hideProgressDialog()
-                            DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
-                        }
-            } else {
-                DialogUtils.hideProgressDialog()
-                DialogUtils.showSessionExpireDialog(context)
-            }
+            val handler = setNetworkHandler(false)
+            DialogUtils.showProgressDialog(context)
+            et_email?.isSelected = false
+            TYMIApp.mFireBaseAuth?.sendPasswordResetEmail(email)?.
+                    addOnSuccessListener {
+                        handler.removeCallbacks(mNetworkRunnable)
+                        DialogUtils.hideProgressDialog()
+                        DialogUtils.showAlertDialog(context, R.string.app_name, R.string.msg_forgot_password,
+                                R.string.ok, Runnable {
+                            activity.setResult(Activity.RESULT_OK)
+                            activity.finish()
+                        })
+                    }?.
+                    addOnFailureListener { e ->
+                        handler.removeCallbacks(mNetworkRunnable)
+                        DialogUtils.hideProgressDialog()
+                        DialogUtils.showAlertDialog(context, getString(R.string.app_name), e.message!!)
+                    }
         }
     }
 }

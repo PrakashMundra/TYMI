@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "765904744502",
-    "firebase_url": "https://tymi-2dce7.firebaseio.com",
-    "project_id": "tymi-2dce7",
-    "storage_bucket": "tymi-2dce7.appspot.com"
+    "project_number": "893330551496",
+    "firebase_url": "https://tymi-dev.firebaseio.com",
+    "project_id": "tymi-dev",
+    "storage_bucket": "tymi-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:765904744502:android:62f1e002aeb78253",
+        "mobilesdk_app_id": "1:893330551496:android:62f1e002aeb78253",
         "android_client_info": {
           "package_name": "com.tymi.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "765904744502-srtcrbafq02n3b1asksivnn55fal2dad.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tymi.dev",
-            "certificate_hash": "f97f83aafaafc0547e291d9760ff72ccc1412b9b"
-          }
-        },
-        {
-          "client_id": "765904744502-m3mm00kvue86uul99seg7l7322c2c9e7.apps.googleusercontent.com",
+          "client_id": "893330551496-hb6gi9qc1eu7b32cmnji7njl9ds3fgte.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAXYdhxtnGJUa6C0aUoShNSQ8n2DycmiIU"
+          "current_key": "AIzaSyDiFPCPjVlA77ydSM4kqzYbovjVizyHvNE"
         }
       ],
       "services": {
@@ -37,57 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "765904744502-m3mm00kvue86uul99seg7l7322c2c9e7.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:765904744502:android:869e645a5e28b575",
-        "android_client_info": {
-          "package_name": "com.tymi"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "765904744502-5kdbm0dc0m9hthhcc5120he1jal03a9d.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tymi",
-            "certificate_hash": "f97f83aafaafc0547e291d9760ff72ccc1412b9b"
-          }
-        },
-        {
-          "client_id": "765904744502-m3mm00kvue86uul99seg7l7322c2c9e7.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAXYdhxtnGJUa6C0aUoShNSQ8n2DycmiIU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "765904744502-m3mm00kvue86uul99seg7l7322c2c9e7.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

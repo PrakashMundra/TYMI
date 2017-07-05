@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchWidth"
-    android:padding="@dimen/margin">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
     <LinearLayout
-        style="@style/MatchWidth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:divider="@drawable/divider_vertical"
         android:orientation="vertical"
+        android:padding="@dimen/margin"
         android:showDividers="middle">
 
         <LinearLayout
             style="@style/MatchWidth"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/Wrap"
-                    android:text="@string/full_name" />
-
-                <TextView
-                    android:id="@+id/child_full_name"
-                    style="@style/ValueTextView"
-                    android:text="@string/full_name" />
-            </LinearLayout>
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/child_edit"
+            <TextView
                 style="@style/Wrap"
-                app:srcCompat="@drawable/ic_edit" />
+                android:text="@string/full_name" />
+
+            <TextView
+                android:id="@+id/child_full_name"
+                style="@style/ValueTextView" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,8 +44,7 @@
 
                 <TextView
                     android:id="@+id/child_role"
-                    style="@style/ValueTextView"
-                    android:text="@string/role" />
+                    style="@style/ValueTextView" />
             </LinearLayout>
 
             <LinearLayout
@@ -70,9 +59,15 @@
 
                 <TextView
                     android:id="@+id/child_dob"
-                    style="@style/ValueTextView"
-                    android:text="@string/dob" />
+                    style="@style/ValueTextView" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/child_edit"
+        style="@style/Wrap"
+        android:layout_margin="@dimen/margin"
+        android:foreground="?attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_edit" />
+</LinearLayout>

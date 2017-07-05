@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
+import com.tymi.AppPreferences
 import com.tymi.Constants
 import com.tymi.R
 import com.tymi.TYMIApp
@@ -16,6 +17,7 @@ import com.tymi.interfaces.IDataCallback
 import com.tymi.interfaces.ISaveDataCallback
 import com.tymi.utils.DialogUtils
 import com.tymi.utils.GenericTextWatcher
+import com.tymi.utils.JSonUtils
 import kotlinx.android.synthetic.main.fragment_add_profile.*
 
 class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatcher.TextWatcherHandler {
@@ -119,6 +121,8 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                     updateDataUserLevel(Constants.DataBase.USER_PROFILE, updatedProfile, object : ISaveDataCallback {
                         override fun onSaveDataCallback(user: FirebaseUser?) {
                             getDataModel().profile = updatedProfile
+                            val profileData = JSonUtils.toJson(updatedProfile)
+                            getAppPreferences().putString(AppPreferences.USER_PROFILE, profileData)
                             activity.setResult(Activity.RESULT_OK)
                             activity.finish()
                         }

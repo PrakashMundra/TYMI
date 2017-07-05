@@ -225,6 +225,9 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
     private fun getIncident(id: String): Incident {
         val selectedStatus = status?.getSelectedItem() as LookUp
+        var endDate = ""
+        if (selectedStatus.id == Constants.STATUS_CLOSE)
+            endDate = end_date.getValue()
         return Incident(id,
                 selectedStatus.id,
                 select_profile?.getSelectedItem() as LookUp,
@@ -233,7 +236,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 start_date.getValue(),
                 medication?.text.toString(),
                 notes?.text.toString(),
-                end_date.getValue(),
+                endDate,
                 expenses?.text.toString(),
                 hospital?.text.toString())
     }

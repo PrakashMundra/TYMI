@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Match"
-    android:orientation="vertical">
-
-    <LinearLayout
-        style="@style/MatchWidth"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/IncidentItem"
-            android:text="@string/profile" />
-
-        <TextView
-            style="@style/IncidentItem"
-            android:text="@string/incident" />
-
-        <TextView
-            style="@style/IncidentItem"
-            android:text="@string/start_date" />
-
-        <android.support.v7.widget.AppCompatImageView
-            style="@style/Wrap"
-            android:layout_margin="@dimen/margin"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_edit" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/et_stroke"
-        android:background="@color/colorPrimary" />
+<RelativeLayout style="@style/Match">
 
     <include layout="@layout/inc_incidents" />
-</LinearLayout>
+</RelativeLayout>
