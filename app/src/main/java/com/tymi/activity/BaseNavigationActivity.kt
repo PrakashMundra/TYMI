@@ -120,7 +120,7 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
             Handler().postDelayed({ updateNavigationSelection() }, 1000)
     }
 
-    fun openActivity(itemId: Int?, source: Activity, destination: Class<out Activity>) {
+    private fun openActivity(itemId: Int?, source: Activity, destination: Class<out Activity>) {
         if (source.javaClass != destination) {
             TYMIApp.menuId = itemId as Int
             val intent = Intent(source, destination)

@@ -109,18 +109,23 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
                     addOnSuccessListener {
                         loadData(Constants.DataBase.USER_PROFILE, object : IDataCallback {
                             override fun onDataCallback(user: FirebaseUser?, data: DataSnapshot) {
-                                val userProfile = data.getValue(UserProfile::class.java)!!
-                                val profile = Profile(user?.uid!!,
-                                        userProfile.fullName,
-                                        user.email!!,
-                                        userProfile.role,
-                                        userProfile.dateOfBirth
-                                )
-                                getDataModel().profile = profile
-                                val profileData = JSonUtils.toJson(profile)
-                                getAppPreferences().putString(AppPreferences.USER_PROFILE, profileData)
-                                DialogUtils.hideProgressDialog()
-                                iLoginActivity?.showHome()
+                                if (data.exists()) {
+                                    val userProfile = data.getValue(UserProfile::class.java)!!
+                                    val profile = Profile(user?.uid!!,
+                                            userProfile.fullName,
+                                            user.email!!,
+                                            userProfile.role,
+                                            userProfile.dateOfBirth
+                                    )
+                                    getDataModel().profile = profile
+                                    val profileData = JSonUtils.toJson(profile)
+                                    getAppPreferences().putString(AppPreferences.USER_PROFILE, profileData)
+                                    DialogUtils.hideProgressDialog()
+                                    iLoginActivity?.showHome()
+                                } else {
+                                    DialogUtils.hideProgressDialog()
+                                    DialogUtils.showAlertDialog(context, R.string.app_name, R.string.no_data)
+                                }
                             }
                         })
                     }?.

@@ -3,6 +3,7 @@ package com.tymi.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.view.ViewPager
 import android.view.View
 import com.google.firebase.database.DataSnapshot
@@ -18,6 +19,7 @@ import com.tymi.fragment.ClosedIncidentsFragment
 import com.tymi.fragment.OpenIncidentsFragment
 import com.tymi.interfaces.IViewIncidentsActivity
 import com.tymi.utils.DialogUtils
+import com.tymi.utils.NetworkUtils
 import kotlinx.android.synthetic.main.activity_view_incidents.*
 import kotlinx.android.synthetic.main.list_item_tab.view.*
 
@@ -108,29 +110,34 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
     private fun loadIncidents() {
         val incidents = DataController.getInstance().dataModel?.incidents
         incidents?.clear()
-        val user = TYMIApp.mFireBaseAuth?.currentUser
-        if (user != null) {
-            DialogUtils.showProgressDialog(this)
-            TYMIApp.mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
-                    addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(error: DatabaseError?) {
-                            DialogUtils.hideProgressDialog()
-                            DialogUtils.showAlertDialog(this@ViewIncidentsActivity,
-                                    getString(R.string.app_name), error?.message!!)
-                        }
-
-                        override fun onDataChange(data: DataSnapshot) {
-                            data.children.forEach { child ->
-                                val incident = child.getValue(Incident::class.java)
-                                incidents?.add(incident!!)
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            val user = TYMIApp.mFireBaseAuth?.currentUser
+            if (user != null) {
+                val handler = setNetworkHandler()
+                DialogUtils.showProgressDialog(this)
+                TYMIApp.mDataBase?.child(Constants.DataBase.INCIDENT_REPORTS)?.child(user.uid)?.
+                        addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(error: DatabaseError?) {
+                                handler.removeCallbacks(networkRunnable)
+                                DialogUtils.hideProgressDialog()
+                                DialogUtils.showAlertDialog(this@ViewIncidentsActivity,
+                                        getString(R.string.app_name), error?.message!!)
                             }
-                            isDataUpdated = true
-                            updateData(incidents_viewpager?.currentItem!!)
-                            DialogUtils.hideProgressDialog()
-                        }
-                    })
-        } else
-            DialogUtils.showSessionExpireDialog(getContext())
+
+                            override fun onDataChange(data: DataSnapshot) {
+                                handler.removeCallbacks(networkRunnable)
+                                data.children.forEach { child ->
+                                    val incident = child.getValue(Incident::class.java)
+                                    incidents?.add(incident!!)
+                                }
+                                isDataUpdated = true
+                                updateData(incidents_viewpager?.currentItem!!)
+                                DialogUtils.hideProgressDialog()
+                            }
+                        })
+            } else
+                DialogUtils.showSessionExpireDialog(getContext())
+        }
     }
 
     private fun updateData(position: Int) {
@@ -139,5 +146,19 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
             fragment.updateData()
         else if (fragment is ClosedIncidentsFragment)
             fragment.updateData()
+    }
+
+    private fun setNetworkHandler(): Handler {
+        val handler = Handler()
+        handler.postDelayed(networkRunnable, Constants.NETWORK_TIME_OUT)
+        return handler
+    }
+
+    private var networkRunnable = Runnable {
+        DialogUtils.hideProgressDialog()
+        DialogUtils.showAlertDialog(this, R.string.app_name, R.string.no_internet, R.string.ok,
+                Runnable {
+                    finish()
+                })
     }
 }

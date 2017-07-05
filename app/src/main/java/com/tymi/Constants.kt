@@ -10,6 +10,7 @@ object Constants {
     val ADS_INTERVAL = 3000000L
     val UPDATE_INTERVAL = (2.times(1000)).toLong()
     val FASTEST_INTERVAL: Long = 2000
+    val NETWORK_TIME_OUT: Long = 45000
 
     object Extras {
         val POSITION = "POSITION"

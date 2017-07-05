@@ -13,7 +13,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="location">Location</string>
     <string name="no_data">No data available</string>
-    <string name="no_internet">No Internet connection.</string>
+    <string name="no_internet">Please check Internet connection and Try again.</string>
 
     <!--Login-->
     <!--<string name=""></string>-->
