@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "593835060419",
+    "firebase_url": "https://tymi-1a322.firebaseio.com",
+    "project_id": "tymi-1a322",
+    "storage_bucket": "tymi-1a322.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593835060419:android:869e645a5e28b575",
+        "android_client_info": {
+          "package_name": "com.tymi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593835060419-ockg53otro0ovft7657lvtkl2ii9netr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxO8SKEc-Qw8TVPm1oxm-X5qUOj9HN6E0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

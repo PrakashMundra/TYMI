@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TYMI</string>
+    <string name="banner_ad_id">ca-app-pub-3636769896050848/1116821816</string>
+    <string name="interstitial_ad_id">ca-app-pub-3636769896050848/2593555013</string>
+    <string name="rewarded_video_ad_id">ca-app-pub-3636769896050848/4070288216</string>
 </resources>
