@@ -2,13 +2,17 @@ package com.tymi.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.tymi.AppPreferences
+import com.tymi.Constants
 import com.tymi.R
 import com.tymi.entity.Profile
 import com.tymi.interfaces.ISplashActivity
 import com.tymi.utils.JSonUtils
+import kotlinx.android.synthetic.main.fragment_splash.*
+
 
 class SplashFragment : BaseFragment() {
     private var iSplashActivity: ISplashActivity? = null
@@ -31,15 +35,28 @@ class SplashFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Handler().postDelayed({
-            val userProfile = getAppPreferences().getString(AppPreferences.USER_PROFILE)
-            if (userProfile.isNullOrEmpty())
-                iSplashActivity?.showLogin()
-            else {
-                val profile = JSonUtils.fromJson(userProfile, Profile::class.java)
-                getDataModel().profile = profile
-                iSplashActivity?.showDashBoard()
+        val fadeInAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
+        fadeInAnimation.duration = Constants.SPLASH_TIME_OUT
+        fadeInAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {
+
             }
-        }, 1000)
+
+            override fun onAnimationEnd(p0: Animation?) {
+                val userProfile = getAppPreferences().getString(AppPreferences.USER_PROFILE)
+                if (userProfile.isNullOrEmpty())
+                    iSplashActivity?.showLogin()
+                else {
+                    val profile = JSonUtils.fromJson(userProfile, Profile::class.java)
+                    getDataModel().profile = profile
+                    iSplashActivity?.showDashBoard()
+                }
+            }
+
+            override fun onAnimationStart(p0: Animation?) {
+
+            }
+        })
+        splash_title?.startAnimation(fadeInAnimation)
     }
 }

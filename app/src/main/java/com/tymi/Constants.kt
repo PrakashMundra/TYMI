@@ -1,6 +1,7 @@
 package com.tymi
 
 object Constants {
+    val SPLASH_TIME_OUT: Long = 2000
     val DATE_FORMAT = "dd/MM/yyyy"
     val DEFAULT_POSITION = -1
     val DEFAULT_LOOK_ID = "-1"
