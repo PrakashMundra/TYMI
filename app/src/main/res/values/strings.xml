@@ -51,7 +51,7 @@
     <string name="medication">Medication</string>
     <string name="notes">Notes</string>
     <string name="end_date">End Date</string>
-    <string name="expenses">Expenses ($)</string>
+    <string name="expenses">Expenses</string>
     <string name="hospital">Hospital</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

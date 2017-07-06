@@ -23,3 +23,19 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepattributes Signature
+
+-keep class kotlin.** { *; }
+-dontwarn kotlin.**
+
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
+-keep class com.google.gson.examples.android.model.** { *; }
+-dontwarn com.google.gson.examples.android.model.**
+
+-keep class com.firebase.** { *; }
+-dontwarn com.firebase.**
+
+-keep class com.tymi.entity.** { *; }
+-keep enum com.tymi.enums.** { *; }

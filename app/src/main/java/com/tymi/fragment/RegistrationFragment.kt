@@ -150,10 +150,14 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE),
                         Constants.RequestCodes.PERMISSIONS)
-            } else
+            } else {
                 startLocationUpdates()
-        } else
+                getDeviceId()
+            }
+        } else {
             startLocationUpdates()
+            getDeviceId()
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -161,13 +165,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
         when (requestCode) {
             Constants.RequestCodes.PERMISSIONS -> {
                 startLocationUpdates()
-                val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                    mDeviceId = tm.imei
-                else {
-                    @Suppress("DEPRECATION")
-                    mDeviceId = tm.deviceId
-                }
+                getDeviceId()
             }
         }
     }
@@ -185,6 +183,16 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             return
         }
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
+    }
+
+    private fun getDeviceId() {
+        val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            mDeviceId = tm.imei
+        else {
+            @Suppress("DEPRECATION")
+            mDeviceId = tm.deviceId
+        }
     }
 
     override fun onLocationChanged(location: Location?) {
