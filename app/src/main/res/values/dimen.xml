@@ -13,4 +13,6 @@
     <dimen name="dashboard_title">16sp</dimen>
     <dimen name="dialog_margin">20dp</dimen>
     <dimen name="navDrawer_header_height">170dp</dimen>
+    <dimen name="splash_ic_width">54dp</dimen>
+    <dimen name="splash_ic_height">84dp</dimen>
 </resources>
