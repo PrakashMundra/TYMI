@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.telephony.TelephonyManager
+import android.text.Editable
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
@@ -226,7 +227,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
 
     }
 
-    override fun afterTextChanged(view: View?) {
+    override fun afterTextChanged(editable: Editable?, view: View?) {
         when (view?.id) {
             R.id.et_full_name -> et_full_name?.isSelected = false
             R.id.et_email -> et_email?.isSelected = false

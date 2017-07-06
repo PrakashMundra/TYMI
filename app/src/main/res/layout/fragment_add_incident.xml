@@ -110,7 +110,7 @@
                     android:id="@+id/expenses"
                     style="@style/MatchWidth"
                     android:imeOptions="actionNext"
-                    android:inputType="numberDecimal" />
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout

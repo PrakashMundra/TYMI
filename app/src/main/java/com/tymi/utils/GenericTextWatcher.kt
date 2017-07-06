@@ -13,8 +13,8 @@ class GenericTextWatcher(view: View, eventHandler: TextWatcherHandler) : TextWat
         this.mEventHandler = eventHandler
     }
 
-    override fun afterTextChanged(p0: Editable?) {
-        mEventHandler?.afterTextChanged(mView)
+    override fun afterTextChanged(editable: Editable?) {
+        mEventHandler?.afterTextChanged(editable, mView)
     }
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -28,6 +28,6 @@ class GenericTextWatcher(view: View, eventHandler: TextWatcherHandler) : TextWat
     interface TextWatcherHandler {
         fun beforeTextChanged()
         fun onTextChanged()
-        fun afterTextChanged(view: View?)
+        fun afterTextChanged(editable: Editable?, view: View?)
     }
 }

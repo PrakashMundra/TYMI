@@ -2,6 +2,7 @@ package com.tymi.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.util.Patterns
 import android.view.KeyEvent
@@ -93,7 +94,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
 
     }
 
-    override fun afterTextChanged(view: View?) {
+    override fun afterTextChanged(editable: Editable?, view: View?) {
         when (view?.id) {
             R.id.et_email -> et_email?.isSelected = false
             R.id.et_password -> et_password?.isSelected = false

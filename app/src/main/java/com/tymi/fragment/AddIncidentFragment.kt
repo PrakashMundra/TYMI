@@ -3,6 +3,7 @@ package com.tymi.fragment
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.view.KeyEvent
 import android.view.View
@@ -24,6 +25,7 @@ import com.tymi.interfaces.ISpinnerWidget
 import com.tymi.utils.DateUtils
 import com.tymi.utils.DialogUtils
 import com.tymi.utils.GenericTextWatcher
+import com.tymi.utils.NumberUtils
 import kotlinx.android.synthetic.main.fragment_add_incident.*
 
 
@@ -31,7 +33,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         GenericTextWatcher.TextWatcherHandler, TextView.OnEditorActionListener, ISpinnerWidget {
     private var mPosition = Constants.DEFAULT_POSITION
     private var isEdit: Boolean = false
-
+    private var mExpensesWatch: GenericTextWatcher? = null
     private val LOOKUPS = arrayOf(Constants.DataBase.CHILD_PROFILES, Constants.DataBase.INCIDENTS)
 
     companion object {
@@ -62,7 +64,8 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         cause?.addTextChangedListener(GenericTextWatcher(cause as EditText, this))
         medication?.addTextChangedListener(GenericTextWatcher(medication as EditText, this))
         notes?.addTextChangedListener(GenericTextWatcher(notes as EditText, this))
-        expenses?.addTextChangedListener(GenericTextWatcher(expenses as EditText, this))
+        mExpensesWatch = GenericTextWatcher(expenses as EditText, this)
+        expenses?.addTextChangedListener(mExpensesWatch)
         btn_submit.setOnClickListener(this)
         btn_cancel.setOnClickListener(this)
         setViewsData()
@@ -186,12 +189,21 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
     }
 
-    override fun afterTextChanged(view: View?) {
+    override fun afterTextChanged(editable: Editable?, view: View?) {
         when (view?.id) {
             R.id.cause -> cause?.isSelected = false
             R.id.medication -> medication?.isSelected = false
             R.id.notes -> notes?.isSelected = false
-            R.id.expenses -> expenses?.isSelected = false
+            R.id.expenses -> {
+                expenses?.removeTextChangedListener(mExpensesWatch)
+                expenses?.isSelected = false
+                var text = editable.toString()
+                text = text.replace(",", "")
+                val formattedText = SpannableStringBuilder(NumberUtils.getFormattedNumber(text))
+                expenses?.text = formattedText
+                expenses?.setSelection(formattedText.length)
+                expenses?.addTextChangedListener(mExpensesWatch)
+            }
         }
     }
 
@@ -237,7 +249,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 medication?.text.toString(),
                 notes?.text.toString(),
                 endDate,
-                expenses?.text.toString(),
+                expenses?.text.toString().replace(",", ""),
                 hospital?.text.toString())
     }
 

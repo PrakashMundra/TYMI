@@ -2,6 +2,7 @@ package com.tymi.fragment
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.view.View
 import android.widget.EditText
@@ -105,7 +106,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
 
     }
 
-    override fun afterTextChanged(view: View?) {
+    override fun afterTextChanged(editable: Editable?, view: View?) {
         when (view?.id) {
             R.id.et_full_name -> et_full_name?.isSelected = false
         }
