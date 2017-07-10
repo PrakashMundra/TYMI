@@ -88,7 +88,7 @@
     <!--Contact us-->
     <string name="contact_us">Contact Us</string>
     <string name="contact_us_text">We welcome and encourage your input.\nPlease send comments and
-        suggestions to us at <b></b>.\n\n\nThanks for using TYMI</string>
+        suggestions to us at <b><u>tymiteam@gmail.com</u></b>.\n\n\nThanks for using TYMI</string>
 
     <!--messages-->
     <string name="msg_registration">Congratulations, You have been registered successfully.
