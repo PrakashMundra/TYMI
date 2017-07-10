@@ -10,6 +10,7 @@ object AppPreferences {
     private var prefs: SharedPreferences? = null
 
     val USER_PROFILE = "USER_PROFILE"
+    val TRIGGER_TIME = "TRIGGER_TIME"
 
     fun getInstance(context: Context): AppPreferences {
         if (instance == null) {
@@ -33,6 +34,14 @@ object AppPreferences {
 
     fun getInt(key: String): Int {
         return prefs?.getInt(key, Constants.DEFAULT_POSITION)!!
+    }
+
+    fun putLong(key: String, value: Long) {
+        prefs?.edit()?.putLong(key, value)?.apply()
+    }
+
+    fun getLong(key: String): Long {
+        return prefs?.getLong(key, 0L)!!
     }
 
     fun putBoolean(key: String, value: Boolean) {

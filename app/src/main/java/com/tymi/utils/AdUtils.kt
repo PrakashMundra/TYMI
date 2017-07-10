@@ -5,6 +5,7 @@ import android.view.View
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
+import com.tymi.BuildConfig
 import com.tymi.R
 import com.tymi.TYMIApp
 
@@ -116,6 +117,9 @@ object AdUtils {
     }
 
     private fun getAdRequest(): AdRequest {
-        return AdRequest.Builder().addTestDevice("79B1B0CB9BEBB6122B2E0C9EB8B3851B").build()
+        if (BuildConfig.DEBUG)
+            return AdRequest.Builder().addTestDevice("79B1B0CB9BEBB6122B2E0C9EB8B3851B").build()
+        else
+            return AdRequest.Builder().build()
     }
 }

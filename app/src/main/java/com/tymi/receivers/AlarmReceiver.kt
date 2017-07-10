@@ -1,16 +1,14 @@
 package com.tymi.receivers
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.SystemClock
 import android.widget.Toast
 import com.tymi.AppPreferences
 import com.tymi.BuildConfig
 import com.tymi.Constants
 import com.tymi.utils.AdUtils
+import com.tymi.utils.AlarmUtils
 import java.util.*
 
 
@@ -22,13 +20,7 @@ class AlarmReceiver : BroadcastReceiver() {
             val profile = AppPreferences.getInstance(context).getString(AppPreferences.USER_PROFILE)
             if (!profile.isNullOrEmpty()) {
                 if (intent?.action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-                    val alarmIntent = Intent(context, AlarmReceiver::class.java)
-                    val pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT)
-                    val manager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                    manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            SystemClock.elapsedRealtime() + Constants.ADS_INTERVAL,
-                            Constants.ADS_INTERVAL, pendingIntent)
+                    AlarmUtils.startAlarm(context)
                 } else {
                     val random = Random()
                     val i = random.nextInt(2) + 1
@@ -38,6 +30,8 @@ class AlarmReceiver : BroadcastReceiver() {
                         1 -> AdUtils.showInterstitialAd(context)
                         2 -> AdUtils.showRewardedVideoAd(context)
                     }
+                    val time = System.currentTimeMillis().plus(Constants.ADS_INTERVAL)
+                    AppPreferences.getInstance(context).putLong(AppPreferences.TRIGGER_TIME, time)
                 }
             }
         }

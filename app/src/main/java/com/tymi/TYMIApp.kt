@@ -17,7 +17,7 @@ class TYMIApp : Application(), Application.ActivityLifecycleCallbacks {
             get() = field
         var mFireBaseAuth: FirebaseAuth? = null
         var mDataBase: DatabaseReference? = null
-        var isActivityShowing = true
+        var isActivityShowing = false
     }
 
     override fun onCreate() {
