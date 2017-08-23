@@ -146,6 +146,8 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                            PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) !=
                             PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -187,12 +189,16 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
     }
 
     private fun getDeviceId() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
         val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            mDeviceId = tm.imei
+            mDeviceId = if (tm.imei != null) tm.imei else ""
         else {
             @Suppress("DEPRECATION")
-            mDeviceId = tm.deviceId
+            mDeviceId = if (tm.deviceId != null) tm.deviceId else ""
         }
     }
 
@@ -306,14 +312,14 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
         }
 
         val password = et_password?.text.toString()
-        if (password.trim().isNullOrEmpty()) {
+        if (password.trim().isEmpty()) {
             et_password?.isSelected = true
             setErrorView(et_password?.parent as View)
             isValid = false
         }
 
         val confirmPassword = et_confirm_password?.text.toString()
-        if (confirmPassword.trim().isNullOrEmpty()) {
+        if (confirmPassword.trim().isEmpty()) {
             et_confirm_password?.isSelected = true
             setErrorView(et_confirm_password?.parent as View)
             isValid = false
@@ -330,7 +336,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
             isValid = false
         }
 
-        if (mDeviceId.isNullOrEmpty()) {
+        if (mDeviceId.isEmpty()) {
             DialogUtils.showAlertDialog(context, R.string.msg_device_id)
             isValid = false
         }

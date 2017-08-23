@@ -61,7 +61,7 @@ class DateViewWidget : BaseWidget, View.OnClickListener {
 
     private fun showDialog() {
         var isCancel = false
-        val picker = DatePickerDialog(context, null, mYear, mMonth, mDay)
+        val picker = DatePickerDialog(context, R.style.DialogTheme, null, mYear, mMonth, mDay)
         if (isMaxToday) {
             val today = GregorianCalendar()
             today.set(Calendar.HOUR_OF_DAY, 23)
