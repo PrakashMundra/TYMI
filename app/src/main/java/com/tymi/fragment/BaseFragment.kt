@@ -33,10 +33,10 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     var mNetworkRunnable: Runnable? = null
 
     override fun getContext(): Context {
-        return activity
+        return activity!!
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater?.inflate(getContainerLayoutId(), container, false)
         return view
     }

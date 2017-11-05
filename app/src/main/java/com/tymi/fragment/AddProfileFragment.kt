@@ -40,7 +40,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
         return R.layout.fragment_add_profile
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
@@ -74,9 +74,10 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
     }
 
     private fun setProfileData() {
-        if (arguments != null) {
-            mPosition = arguments.getInt(Constants.Extras.POSITION)
-            isEdit = arguments.getBoolean(Constants.Extras.EDIT, false)
+        val bundle = arguments
+        if (bundle != null) {
+            mPosition = bundle.getInt(Constants.Extras.POSITION)
+            isEdit = bundle.getBoolean(Constants.Extras.EDIT, false)
             if (isEdit) {
                 val profile = getDataModel().profile
                 et_full_name?.text = SpannableStringBuilder(profile?.fullName)
@@ -94,7 +95,7 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btn_submit -> submitProfile()
-            R.id.btn_cancel -> activity.finish()
+            R.id.btn_cancel -> activity?.finish()
         }
     }
 
@@ -124,8 +125,8 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                             getDataModel().profile = updatedProfile
                             val profileData = JSonUtils.toJson(updatedProfile)
                             getAppPreferences().putString(AppPreferences.USER_PROFILE, profileData)
-                            activity.setResult(Activity.RESULT_OK)
-                            activity.finish()
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
                         }
                     })
                 }
@@ -136,8 +137,8 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                 updateData(Constants.DataBase.CHILD_PROFILES, id, updatedProfile, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().childProfiles[mPosition] = updatedProfile
-                        activity.setResult(Activity.RESULT_OK)
-                        activity.finish()
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
                     }
                 })
             } else {
@@ -146,8 +147,8 @@ class AddProfileFragment : BaseFragment(), View.OnClickListener, GenericTextWatc
                 saveArrayData(Constants.DataBase.CHILD_PROFILES, key, profile, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().childProfiles.add(profile)
-                        activity.setResult(Activity.RESULT_OK)
-                        activity.finish()
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
                     }
                 })
             }

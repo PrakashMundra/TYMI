@@ -33,7 +33,7 @@ class SplashFragment : BaseFragment() {
         iSplashActivity = null
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fadeInAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
         fadeInAnimation.duration = Constants.SPLASH_TIME_OUT

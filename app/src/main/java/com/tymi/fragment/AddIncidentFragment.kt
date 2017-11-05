@@ -51,7 +51,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         return R.layout.fragment_add_incident
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
@@ -124,9 +124,10 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 }
             }
         } else {
-            if (arguments != null) {
-                mPosition = arguments.getInt(Constants.Extras.POSITION)
-                isEdit = arguments.get(Constants.Extras.EDIT) as Boolean
+            val bundle = arguments
+            if (bundle != null) {
+                mPosition = bundle.getInt(Constants.Extras.POSITION)
+                isEdit = bundle.get(Constants.Extras.EDIT) as Boolean
                 if (mPosition != Constants.DEFAULT_POSITION)
                     setIncidentData()
             }
@@ -159,7 +160,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btn_submit -> submitIncident()
-            R.id.btn_cancel -> activity.finish()
+            R.id.btn_cancel -> activity?.finish()
         }
     }
 
@@ -216,8 +217,8 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 updateData(Constants.DataBase.INCIDENT_REPORTS, id, updatedIncident, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().incidents[mPosition] = updatedIncident
-                        activity.setResult(Activity.RESULT_OK)
-                        activity.finish()
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
                     }
                 })
             } else {
@@ -226,8 +227,8 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 saveArrayData(Constants.DataBase.INCIDENT_REPORTS, key, incident, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
                         getDataModel().incidents.add(incident)
-                        activity.setResult(Activity.RESULT_OK)
-                        activity.finish()
+                        activity?.setResult(Activity.RESULT_OK)
+                        activity?.finish()
                     }
                 })
             }

@@ -51,7 +51,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
         return R.layout.fragment_registration
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initLocation()
@@ -213,7 +213,7 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btn_submit -> doRegister()
-            R.id.btn_cancel -> activity.finish()
+            R.id.btn_cancel -> activity?.finish()
         }
     }
 
@@ -260,8 +260,8 @@ class RegistrationFragment : BaseFragment(), View.OnClickListener, TextView.OnEd
                                     DialogUtils.showAlertDialog(context, R.string.registration,
                                             R.string.msg_registration, R.string.ok,
                                             Runnable {
-                                                activity.setResult(Activity.RESULT_OK)
-                                                activity.finish()
+                                                activity?.setResult(Activity.RESULT_OK)
+                                                activity?.finish()
                                             })
                                 }?.
                                 addOnFailureListener { e ->

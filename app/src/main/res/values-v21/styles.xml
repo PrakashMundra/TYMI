@@ -1,4 +1,5 @@
 <resources>
+
     <style name="BaseDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@android:color/white</item>
     </style>

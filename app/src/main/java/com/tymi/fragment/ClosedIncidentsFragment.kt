@@ -1,5 +1,6 @@
 package com.tymi.fragment
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
@@ -17,7 +18,7 @@ class ClosedIncidentsFragment : BaseFragment() {
         return R.layout.fragment_closed_incidents
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
@@ -27,7 +28,8 @@ class ClosedIncidentsFragment : BaseFragment() {
         incidents_recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val itemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-        itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_child_profile))
+        val drawable = ContextCompat.getDrawable(context, R.drawable.divider_child_profile) as Drawable
+        itemDecoration.setDrawable(drawable)
         incidents_recyclerView?.addItemDecoration(itemDecoration)
         val incidents = getDataModel().getFilteredIncidents(Constants.STATUS_CLOSE)
         incidents_recyclerView?.adapter = IncidentsAdapter(context, incidents)

@@ -33,17 +33,18 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener, TextView.On
         return R.layout.fragment_forgot_password
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments != null)
-            et_email?.text = SpannableStringBuilder(arguments.getString(Constants.Extras.EMAIL))
+        val bundle = arguments
+        if (bundle != null)
+            et_email?.text = SpannableStringBuilder(bundle.getString(Constants.Extras.EMAIL))
         btn_cancel?.setOnClickListener(this)
         btn_send?.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btn_cancel -> activity.finish()
+            R.id.btn_cancel -> activity?.finish()
             R.id.btn_send -> sendResetPassword()
         }
     }
@@ -84,8 +85,8 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener, TextView.On
                         DialogUtils.hideProgressDialog()
                         DialogUtils.showAlertDialog(context, R.string.app_name, R.string.msg_forgot_password,
                                 R.string.ok, Runnable {
-                            activity.setResult(Activity.RESULT_OK)
-                            activity.finish()
+                            activity?.setResult(Activity.RESULT_OK)
+                            activity?.finish()
                         })
                     }?.
                     addOnFailureListener { e ->

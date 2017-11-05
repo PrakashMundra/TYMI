@@ -47,7 +47,8 @@ data class Incident(var id: String = "",
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<Incident> = object : Parcelable.Creator<Incident> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Incident> = object : Parcelable.Creator<Incident> {
             override fun createFromParcel(source: Parcel): Incident {
                 return Incident(source)
             }

@@ -1,6 +1,7 @@
 package com.tymi.fragment
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
@@ -38,7 +39,7 @@ class ViewProfilesFragment : BaseFragment() {
         return R.layout.fragment_view_profiles
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
@@ -50,7 +51,7 @@ class ViewProfilesFragment : BaseFragment() {
         child_profiles_recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val itemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-        itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_child_profile))
+        itemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_child_profile) as Drawable)
         child_profiles_recyclerView?.addItemDecoration(itemDecoration)
         mChildProfilesAdapter = ChildProfilesAdapter(context)
         val childProfiles = getDataModel().childProfiles

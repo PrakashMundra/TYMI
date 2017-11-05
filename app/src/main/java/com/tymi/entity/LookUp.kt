@@ -22,7 +22,8 @@ data class LookUp(val id: String = "", val title: String = "") : Parcelable {
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<LookUp> = object : Parcelable.Creator<LookUp> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<LookUp> = object : Parcelable.Creator<LookUp> {
             override fun createFromParcel(source: Parcel): LookUp {
                 return LookUp(source)
             }

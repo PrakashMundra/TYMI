@@ -26,7 +26,7 @@ class TabsAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         return mFragmentTitleList[position]
     }
 
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         return PagerAdapter.POSITION_NONE
     }
 }

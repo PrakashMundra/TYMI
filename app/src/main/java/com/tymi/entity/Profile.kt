@@ -29,7 +29,8 @@ data class Profile(var id: String = "",
     }
 
     companion object {
-        @JvmField val CREATOR: Parcelable.Creator<Profile> = object : Parcelable.Creator<Profile> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Profile> = object : Parcelable.Creator<Profile> {
             override fun createFromParcel(source: Parcel): Profile {
                 return Profile(source)
             }

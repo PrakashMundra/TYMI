@@ -47,7 +47,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener, TextView.OnEditorAct
         iLoginActivity = null
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }

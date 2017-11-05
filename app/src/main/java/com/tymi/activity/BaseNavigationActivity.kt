@@ -44,13 +44,7 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
             toolbar.title = getString(getToolBarTitle())
         setSupportActionBar(toolbar)
         val actionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawer_layout, toolbar, 0, 0) {
-            override fun onDrawerClosed(drawerView: View?) {
-                super.onDrawerClosed(drawerView)
-            }
 
-            override fun onDrawerOpened(drawerView: View?) {
-                super.onDrawerOpened(drawerView)
-            }
         }
         drawer_layout?.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
