@@ -72,9 +72,9 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
         return view
     }
 
-    override fun onIncidentSelection(position: Int, isEdit: Boolean) {
+    override fun onIncidentSelection(id: String, isEdit: Boolean) {
         val intent = Intent(this, AddIncidentActivity::class.java)
-        intent.putExtra(Constants.Extras.POSITION, position)
+        intent.putExtra(Constants.Extras.ID, id)
         intent.putExtra(Constants.Extras.EDIT, isEdit)
         startActivityForResult(intent, Constants.RequestCodes.INCIDENT)
     }

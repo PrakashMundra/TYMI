@@ -1,5 +1,5 @@
 package com.tymi.interfaces
 
 interface IViewIncidentsActivity {
-    fun onIncidentSelection(position: Int, isEdit: Boolean)
+    fun onIncidentSelection(id: String, isEdit: Boolean)
 }

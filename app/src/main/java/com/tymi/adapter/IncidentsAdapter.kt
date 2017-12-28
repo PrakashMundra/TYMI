@@ -22,7 +22,7 @@ class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindData(position, mIncidents[position], iViewIncidentsActivity)
+        holder?.bindData(mIncidents[position], iViewIncidentsActivity)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, position: Int): ViewHolder {
@@ -36,10 +36,10 @@ class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bindData(position: Int, incident: Incident, iViewIncidentsActivity: IViewIncidentsActivity?) {
+        fun bindData(incident: Incident, iViewIncidentsActivity: IViewIncidentsActivity?) {
             with(incident) {
                 itemView.setOnClickListener { v ->
-                    val pos = v.item_edit.tag as Int
+                    val pos = v.item_edit.tag as String
                     iViewIncidentsActivity?.onIncidentSelection(pos, false)
                 }
                 itemView.item_profile.text = incident.profile.title
@@ -57,9 +57,9 @@ class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>
                     itemView.item_expenses.text = "0"
                 else
                     itemView.item_expenses.text = NumberUtils.getFormattedNumber(expenses)
-                itemView.item_edit.tag = position
+                itemView.item_edit.tag = incident.id
                 itemView.item_edit.setOnClickListener { v ->
-                    iViewIncidentsActivity?.onIncidentSelection(v.tag as Int, true)
+                    iViewIncidentsActivity?.onIncidentSelection(v.tag as String, true)
                 }
             }
         }

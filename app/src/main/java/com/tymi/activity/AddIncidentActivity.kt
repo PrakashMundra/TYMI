@@ -22,9 +22,9 @@ class AddIncidentActivity : BaseNavigationActivity() {
         val addIncidentFragment: AddIncidentFragment
         if (intent != null && intent.extras != null) {
             setNavigationBack()
-            val position = intent.extras.get(Constants.Extras.POSITION) as Int
+            val id = intent.extras.get(Constants.Extras.ID) as String
             val isEdit = intent.extras.get(Constants.Extras.EDIT) as Boolean
-            addIncidentFragment = AddIncidentFragment.newInstance(position, isEdit)
+            addIncidentFragment = AddIncidentFragment.newInstance(id, isEdit)
             toolbar.title = if (isEdit) getString(R.string.edit_incident)
             else getString(R.string.view_incident)
         } else {

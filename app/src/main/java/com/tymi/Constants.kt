@@ -17,6 +17,7 @@ object Constants {
         val POSITION = "POSITION"
         val EDIT = "EDIT"
         val EMAIL = "EMAIL"
+        val ID = "ID"
     }
 
     object RequestCodes {

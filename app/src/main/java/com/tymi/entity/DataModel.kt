@@ -30,4 +30,17 @@ class DataModel {
     fun getFilteredIncidents(id: String): ArrayList<Incident> {
         return incidents.filter { it.statusId.contentEquals(id) } as ArrayList<Incident>
     }
+
+    fun getIncident(id: String): Incident {
+        return incidents.filter { it.id.contentEquals(id) }.single()
+    }
+
+    fun updateIncident(updatedIncident: Incident) {
+        incidents.forEachIndexed { index, incident ->
+            if (incident.id.contentEquals(updatedIncident.id)) {
+                incidents[index] = updatedIncident
+                return
+            }
+        }
+    }
 }

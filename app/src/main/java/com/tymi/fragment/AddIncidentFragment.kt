@@ -31,16 +31,16 @@ import kotlinx.android.synthetic.main.fragment_add_incident.*
 
 class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         GenericTextWatcher.TextWatcherHandler, TextView.OnEditorActionListener, ISpinnerWidget {
-    private var mPosition = Constants.DEFAULT_POSITION
+    private var mId: String? = null
     private var isEdit: Boolean = false
     private var mExpensesWatch: GenericTextWatcher? = null
     private val LOOKUPS = arrayOf(Constants.DataBase.CHILD_PROFILES, Constants.DataBase.INCIDENTS)
 
     companion object {
-        fun newInstance(position: Int, isEdit: Boolean): AddIncidentFragment {
+        fun newInstance(id: String, isEdit: Boolean): AddIncidentFragment {
             val fragment = AddIncidentFragment()
             val bundle = Bundle()
-            bundle.putInt(Constants.Extras.POSITION, position)
+            bundle.putString(Constants.Extras.ID, id)
             bundle.putBoolean(Constants.Extras.EDIT, isEdit)
             fragment.arguments = bundle
             return fragment
@@ -126,9 +126,9 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         } else {
             val bundle = arguments
             if (bundle != null) {
-                mPosition = bundle.getInt(Constants.Extras.POSITION)
+                mId = bundle.getString(Constants.Extras.ID)
                 isEdit = bundle.get(Constants.Extras.EDIT) as Boolean
-                if (mPosition != Constants.DEFAULT_POSITION)
+                if (!mId.isNullOrEmpty())
                     setIncidentData()
             }
             DialogUtils.hideProgressDialog()
@@ -136,7 +136,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
     }
 
     private fun setIncidentData() {
-        val incident = getDataModel().incidents[mPosition]
+        val incident = getDataModel().getIncident(mId!!)
         status?.setSelectedValue(incident.statusId)
         select_profile?.setSelectedValue(incident.profile)
         select_incident?.setSelectedValue(incident.incident)
@@ -210,13 +210,11 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
     private fun submitIncident() {
         if (validations()) {
-            if (mPosition != Constants.DEFAULT_POSITION) {
-                val incident = getDataModel().incidents[mPosition]
-                val id = incident.id
-                val updatedIncident = getIncident(id)
-                updateData(Constants.DataBase.INCIDENT_REPORTS, id, updatedIncident, object : ISaveDataCallback {
+            if (!mId.isNullOrEmpty()) {
+                val updatedIncident = getIncident(mId!!)
+                updateData(Constants.DataBase.INCIDENT_REPORTS, mId!!, updatedIncident, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
-                        getDataModel().incidents[mPosition] = updatedIncident
+                        getDataModel().updateIncident(updatedIncident);
                         activity?.setResult(Activity.RESULT_OK)
                         activity?.finish()
                     }
