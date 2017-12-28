@@ -37,8 +37,7 @@ abstract class BaseFragment : Fragment(), ContextHolder {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(getContainerLayoutId(), container, false)
-        return view
+        return inflater.inflate(getContainerLayoutId(), container, false)
     }
 
     protected abstract fun getContainerLayoutId(): Int
@@ -61,13 +60,10 @@ abstract class BaseFragment : Fragment(), ContextHolder {
         val count = layout.childCount
         (0 until count).forEach { i ->
             val view = layout.getChildAt(i)
-            if (view != null) {
-                if (view is SpinnerWidget)
-                    view.isEnabled = false
-                else if (view is EditText)
-                    view.isEnabled = false
-                else if (view is ViewGroup)
-                    disableAllFields(view)
+            when (view) {
+                is SpinnerWidget -> view.isEnabled = false
+                is EditText -> view.isEnabled = false
+                is ViewGroup -> disableAllFields(view)
             }
         }
     }

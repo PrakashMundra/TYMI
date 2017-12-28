@@ -19,14 +19,14 @@ class AddProfileActivity : BaseNavigationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val addProfileFragment: AddProfileFragment
-        if (intent != null && intent.extras != null) {
+        addProfileFragment = if (intent != null && intent.extras != null) {
             setNavigationBack()
             val position = intent.extras.get(Constants.Extras.POSITION) as Int
             val isEdit = intent.extras.getBoolean(Constants.Extras.EDIT)
-            addProfileFragment = AddProfileFragment.newInstance(position, isEdit)
+            AddProfileFragment.newInstance(position, isEdit)
         } else {
             setNavigationMenu()
-            addProfileFragment = AddProfileFragment()
+            AddProfileFragment()
         }
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container_add_profile, addProfileFragment, TAG)

@@ -7,7 +7,6 @@ import com.tymi.entity.LookUp
 object DataController {
     private var instance: DataController? = null
     var dataModel: DataModel? = null
-        get() = field
     private var lookUpsCache: MutableMap<String, List<LookUp>>? = null
 
     fun getInstance(): DataController {

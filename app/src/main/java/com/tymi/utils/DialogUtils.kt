@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.view.Window
 import com.tymi.AppPreferences
@@ -75,37 +74,35 @@ object DialogUtils {
                 context.getString(positive), positiveRunnable, null, null, context.getString(negative), negativeRunnable)
     }
 
-    fun showAlertDialog(context: Context, title: String?, message: String,
-                        positive: String?, positiveRunnable: Runnable?,
-                        neutral: String?, neutralRunnable: Runnable?,
-                        negative: String?, negativeRunnable: Runnable?) {
-        val builder: AlertDialog.Builder?
-        if (context is IDialogThemeProvider) {
-            builder = AlertDialog.Builder(context, context.getDialogTheme())
-        } else {
-            builder = AlertDialog.Builder(context)
-        }
-        builder.setMessage(message)
+    private fun showAlertDialog(context: Context, title: String?, message: String,
+                                positive: String?, positiveRunnable: Runnable?,
+                                neutral: String?, neutralRunnable: Runnable?,
+                                negative: String?, negativeRunnable: Runnable?) {
+        val builder: AlertDialog.Builder? = if (context is IDialogThemeProvider)
+            AlertDialog.Builder(context, context.getDialogTheme())
+        else
+            AlertDialog.Builder(context)
+        builder?.setMessage(message)
         val titleStr = if (title.isNullOrEmpty()) context.getString(R.string.app_name) else title
-        builder.setTitle(titleStr)
+        builder?.setTitle(titleStr)
         val positiveStr = if (positive.isNullOrEmpty()) context.getString(R.string.ok) else positive
-        builder.setPositiveButton(positiveStr, DialogInterface.OnClickListener { _, _ ->
+        builder?.setPositiveButton(positiveStr, { _, _ ->
             positiveRunnable?.run()
         })
 
         if (!neutral.isNullOrEmpty()) {
-            builder.setNeutralButton(neutral, DialogInterface.OnClickListener { _, _ ->
+            builder?.setNeutralButton(neutral, { _, _ ->
                 neutralRunnable?.run()
             })
         }
 
         if (!negative.isNullOrEmpty()) {
-            builder.setNegativeButton(negative, DialogInterface.OnClickListener { _, _ ->
+            builder?.setNegativeButton(negative, { _, _ ->
                 negativeRunnable?.run()
             })
         }
-        builder.setCancelable(false)
-        builder.create().show()
+        builder?.setCancelable(false)
+        builder?.create()?.show()
     }
 
     fun showSessionExpireDialog(context: Context) {

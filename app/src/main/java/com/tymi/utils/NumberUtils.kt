@@ -7,7 +7,7 @@ import java.util.*
 
 object NumberUtils {
     fun getFormattedNumber(value: String): String {
-        if (!value.trim().isNullOrEmpty()) {
+        if (!value.trim().isEmpty()) {
             val parsed = BigDecimal(value)
             val numberInstance = NumberFormat.getNumberInstance(Locale.ENGLISH)
             val decimalFormat = numberInstance as DecimalFormat

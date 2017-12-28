@@ -11,10 +11,6 @@ import com.tymi.controllers.DataController
 class TYMIApp : Application(), Application.ActivityLifecycleCallbacks {
     companion object {
         var menuId: Int = R.id.dashboard
-            set(value) {
-                field = value
-            }
-            get() = field
         var mFireBaseAuth: FirebaseAuth? = null
         var mDataBase: DatabaseReference? = null
         var isActivityShowing = false

@@ -13,30 +13,6 @@ object AdUtils {
     fun showBannerAd(adView: AdView) {
         adView.loadAd(getAdRequest())
         adView.adListener = object : AdListener() {
-            override fun onAdImpression() {
-                super.onAdImpression()
-            }
-
-            override fun onAdLeftApplication() {
-                super.onAdLeftApplication()
-            }
-
-            override fun onAdClicked() {
-                super.onAdClicked()
-            }
-
-            override fun onAdFailedToLoad(p0: Int) {
-                super.onAdFailedToLoad(p0)
-            }
-
-            override fun onAdClosed() {
-                super.onAdClosed()
-            }
-
-            override fun onAdOpened() {
-                super.onAdOpened()
-            }
-
             override fun onAdLoaded() {
                 super.onAdLoaded()
                 adView.visibility = View.VISIBLE
@@ -49,30 +25,6 @@ object AdUtils {
         interstitialAd.adUnitId = context.getString(R.string.interstitial_ad_id)
         interstitialAd.loadAd(getAdRequest())
         interstitialAd.adListener = object : AdListener() {
-            override fun onAdImpression() {
-                super.onAdImpression()
-            }
-
-            override fun onAdLeftApplication() {
-                super.onAdLeftApplication()
-            }
-
-            override fun onAdClicked() {
-                super.onAdClicked()
-            }
-
-            override fun onAdFailedToLoad(p0: Int) {
-                super.onAdFailedToLoad(p0)
-            }
-
-            override fun onAdClosed() {
-                super.onAdClosed()
-            }
-
-            override fun onAdOpened() {
-                super.onAdOpened()
-            }
-
             override fun onAdLoaded() {
                 super.onAdLoaded()
                 if (TYMIApp.isActivityShowing)
@@ -117,9 +69,10 @@ object AdUtils {
     }
 
     private fun getAdRequest(): AdRequest {
-        if (BuildConfig.DEBUG)
-            return AdRequest.Builder().addTestDevice("79B1B0CB9BEBB6122B2E0C9EB8B3851B").build()
-        else
-            return AdRequest.Builder().build()
+        when (BuildConfig.DEBUG) {
+            true -> return AdRequest.Builder().
+                    addTestDevice("79B1B0CB9BEBB6122B2E0C9EB8B3851B").build()
+        }
+        return AdRequest.Builder().build()
     }
 }

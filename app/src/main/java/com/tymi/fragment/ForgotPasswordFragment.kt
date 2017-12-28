@@ -73,7 +73,7 @@ class ForgotPasswordFragment : BaseFragment(), View.OnClickListener, TextView.On
 
     private fun sendResetPassword() {
         val email = et_email?.text.toString().trim()
-        if (email.isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
             et_email?.isSelected = true
         else {
             val handler = setNetworkHandler(false)

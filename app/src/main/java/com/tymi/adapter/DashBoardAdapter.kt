@@ -11,7 +11,7 @@ import com.tymi.interfaces.IDashBoardActivity
 import com.tymi.utils.DrawableUtils
 import kotlinx.android.synthetic.main.list_item_dashboard.view.*
 
-class DashBoardAdapter(val context: Context, val items: Array<DashBoardItem>) :
+class DashBoardAdapter(val context: Context, private val items: Array<DashBoardItem>) :
         RecyclerView.Adapter<DashBoardAdapter.ViewHolder>() {
     private var iDashBoardActivity: IDashBoardActivity? = null
 

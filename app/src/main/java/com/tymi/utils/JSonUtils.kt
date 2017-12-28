@@ -19,24 +19,24 @@ object JSonUtils {
     }
 
     fun <T> fromJson(data: String, classOfT: Class<T>): T {
-        Log.d(TAG, "decoding json: " + data);
+        Log.d(TAG, "decoding json: " + data)
         return gson!!.fromJson(data, classOfT)
     }
 
-    fun <T> fromJson(data: Reader, classOfT: Class<T>): T {
-        Log.d(TAG, "decoding json from reader " + data);
+    private fun <T> fromJson(data: Reader, classOfT: Class<T>): T {
+        Log.d(TAG, "decoding json from reader " + data)
         val t = gson!!.fromJson(data, classOfT)
-        Log.d(TAG, "decoded object " + t);
+        Log.d(TAG, "decoded object " + t)
         return t
     }
 
     fun <T> fromJson(data: InputStream, classOfT: Class<T>): T {
-        Log.d(TAG, "decoding json from stream");
+        Log.d(TAG, "decoding json from stream")
         return fromJson(InputStreamReader(data), classOfT)
     }
 
     fun <T> fromJson(data: String, collectionType: Type): Collection<T> {
-        Log.d(TAG, "decoding json: " + data);
+        Log.d(TAG, "decoding json: " + data)
         return gson!!.fromJson(data, collectionType)
     }
 

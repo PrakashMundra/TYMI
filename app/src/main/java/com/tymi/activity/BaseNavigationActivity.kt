@@ -107,7 +107,7 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
         drawer_layout?.closeDrawers()
     }
 
-    fun checkNetworkAndOpenActivity(itemId: Int?, source: Activity, destination: Class<out Activity>) {
+    private fun checkNetworkAndOpenActivity(itemId: Int?, source: Activity, destination: Class<out Activity>) {
         if (NetworkUtils.isNetworkAvailable(this))
             openActivity(itemId, source, destination)
         else
@@ -125,7 +125,7 @@ abstract class BaseNavigationActivity : BaseActivity(), NavigationView.OnNavigat
         }
     }
 
-    fun logout() {
+    private fun logout() {
         TYMIApp.mFireBaseAuth?.signOut()
         AppPreferences.getInstance(this).clearData()
         AlarmUtils.stopAlarm(this)

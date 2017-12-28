@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.FrameLayout
 
 abstract class BaseWidget : FrameLayout {
-    protected var inflatedView: View? = null
+    private var inflatedView: View? = null
 
     constructor(context: Context?) : super(context) {
         init()

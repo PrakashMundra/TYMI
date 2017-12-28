@@ -44,7 +44,7 @@ class SplashFragment : BaseFragment() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 val userProfile = getAppPreferences().getString(AppPreferences.USER_PROFILE)
-                if (userProfile.isNullOrEmpty())
+                if (userProfile.isEmpty())
                     iSplashActivity?.showLogin()
                 else {
                     val profile = JSonUtils.fromJson(userProfile, Profile::class.java)

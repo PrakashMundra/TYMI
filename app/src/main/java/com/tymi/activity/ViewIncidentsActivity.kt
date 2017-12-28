@@ -144,8 +144,7 @@ class ViewIncidentsActivity : BaseNavigationActivity(), IViewIncidentsActivity,
         val fragment = mTabsAdapter?.getItem(position)
         if (fragment is OpenIncidentsFragment)
             fragment.updateData()
-        else if (fragment is ClosedIncidentsFragment)
-            fragment.updateData()
+        else (fragment as? ClosedIncidentsFragment)?.updateData()
     }
 
     private fun setNetworkHandler(): Handler {

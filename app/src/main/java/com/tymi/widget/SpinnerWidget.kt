@@ -46,7 +46,7 @@ class SpinnerWidget : BaseWidget, AdapterView.OnItemSelectedListener {
     }
 
     fun setAdapterWithDefault(lookUps: ArrayList<LookUp>) {
-        this.mLookUps = ArrayList<LookUp>()
+        this.mLookUps = ArrayList()
         this.mLookUps?.add(LookUp(Constants.DEFAULT_LOOK_ID, context.getString(R.string.select)))
         this.mLookUps?.addAll(lookUps)
         val adapter = SpinnerAdapter(context, R.layout.list_item_spinner, mLookUps!!)

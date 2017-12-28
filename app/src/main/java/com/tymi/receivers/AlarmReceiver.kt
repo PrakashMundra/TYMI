@@ -18,7 +18,7 @@ class AlarmReceiver : BroadcastReceiver() {
             Toast.makeText(context, "Ads Alarm has been Received", Toast.LENGTH_LONG).show()
         if (context != null) {
             val profile = AppPreferences.getInstance(context).getString(AppPreferences.USER_PROFILE)
-            if (!profile.isNullOrEmpty()) {
+            if (!profile.isEmpty()) {
                 if (intent?.action.equals(Intent.ACTION_BOOT_COMPLETED)) {
                     AlarmUtils.startAlarm(context)
                 } else {

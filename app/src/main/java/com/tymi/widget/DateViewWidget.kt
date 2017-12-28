@@ -18,9 +18,6 @@ class DateViewWidget : BaseWidget, View.OnClickListener {
     private var mMonth: Int = 0
     private var mDay: Int = 0
     var isMaxToday = false
-        set(value) {
-            field = value
-        }
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -99,7 +96,7 @@ class DateViewWidget : BaseWidget, View.OnClickListener {
     }
 
     fun setValue(dateStr: String) {
-        if (!dateStr.isNullOrEmpty()) {
+        if (!dateStr.isEmpty()) {
             widget_date_value?.text = SpannableStringBuilder(dateStr)
             val dateFormat = SimpleDateFormat(Constants.DATE_FORMAT, Locale.US)
             val date = dateFormat.parse(dateStr)

@@ -12,7 +12,7 @@ import com.tymi.interfaces.IViewIncidentsActivity
 import com.tymi.utils.NumberUtils
 import kotlinx.android.synthetic.main.list_item_incident.view.*
 
-class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>) :
+class IncidentsAdapter(val context: Context, private val mIncidents: ArrayList<Incident>) :
         RecyclerView.Adapter<IncidentsAdapter.ViewHolder>() {
     private var iViewIncidentsActivity: IViewIncidentsActivity? = null
 
@@ -52,8 +52,8 @@ class IncidentsAdapter(val context: Context, val mIncidents: ArrayList<Incident>
                     itemView.item_end_date.text = incident.endDate
                     itemView.item_end_date_layout.visibility = View.VISIBLE
                 }
-                val expenses = incident.expenses;
-                if (expenses.isNullOrEmpty())
+                val expenses = incident.expenses
+                if (expenses.isEmpty())
                     itemView.item_expenses.text = "0"
                 else
                     itemView.item_expenses.text = NumberUtils.getFormattedNumber(expenses)

@@ -29,6 +29,7 @@
                 <EditText
                     android:id="@+id/et_full_name"
                     style="@style/MatchWidth"
+                    android:hint="@null"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName" />
             </LinearLayout>

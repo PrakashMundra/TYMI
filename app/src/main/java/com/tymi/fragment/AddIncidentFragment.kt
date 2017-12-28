@@ -214,7 +214,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
                 val updatedIncident = getIncident(mId!!)
                 updateData(Constants.DataBase.INCIDENT_REPORTS, mId!!, updatedIncident, object : ISaveDataCallback {
                     override fun onSaveDataCallback(user: FirebaseUser?) {
-                        getDataModel().updateIncident(updatedIncident);
+                        getDataModel().updateIncident(updatedIncident)
                         activity?.setResult(Activity.RESULT_OK)
                         activity?.finish()
                     }
@@ -277,21 +277,21 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
         }
 
         val causeStr = cause?.text.toString()
-        if (causeStr.trim().isNullOrEmpty()) {
+        if (causeStr.trim().isEmpty()) {
             cause?.isSelected = true
             setErrorView(cause?.parent as View)
             isValid = false
         }
 
         val startDate = start_date?.getValue() as String
-        if (startDate.trim().isNullOrEmpty()) {
+        if (startDate.trim().isEmpty()) {
             start_date?.isSelected = true
             setErrorView(start_date as View)
             isValid = false
         }
 
         val medicationStr = medication?.text.toString()
-        if (medicationStr.trim().isNullOrEmpty()) {
+        if (medicationStr.trim().isEmpty()) {
             medication?.isSelected = true
             setErrorView(medication?.parent as View)
             isValid = false
@@ -306,7 +306,7 @@ class AddIncidentFragment : BaseFragment(), View.OnClickListener,
 
         if (selectedStatus.id == Constants.STATUS_CLOSE) {
             val endDate = end_date?.getValue() as String
-            if (endDate.trim().isNullOrEmpty()) {
+            if (endDate.trim().isEmpty()) {
                 end_date?.isSelected = true
                 setErrorView(end_date as View)
                 isValid = false

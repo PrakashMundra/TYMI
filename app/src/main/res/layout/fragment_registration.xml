@@ -30,6 +30,7 @@
                 <EditText
                     android:id="@+id/et_full_name"
                     style="@style/MatchWidth"
+                    android:hint="@null"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName" />
             </LinearLayout>
@@ -45,6 +46,7 @@
                 <EditText
                     android:id="@+id/et_email"
                     style="@style/MatchWidth"
+                    android:hint="@null"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress" />
             </LinearLayout>
@@ -116,6 +118,7 @@
                 <EditText
                     android:id="@+id/et_password"
                     style="@style/MatchWidth"
+                    android:hint="@null"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword" />
             </LinearLayout>
@@ -131,6 +134,7 @@
                 <EditText
                     android:id="@+id/et_confirm_password"
                     style="@style/MatchWidth"
+                    android:hint="@null"
                     android:imeOptions="actionGo"
                     android:inputType="textPassword" />
             </LinearLayout>
